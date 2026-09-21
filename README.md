@@ -1,4 +1,4 @@
-# jecvn
+# jevcn
 
 Jev 中文社区 · 面向软件工程决策的 System 1 强类型毫秒级模型中文指南
 
