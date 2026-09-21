@@ -245,4 +245,3 @@ try {
 
 - [Choice / Noul / Score 三大原子机制详解](/primitives/types/) —— 搞清每种类型的适用边界
 - [系统一 vs 通用 LLM 对比](/primitives/comparison/) —— 想清楚什么该交给 Jev、什么该留给慢脑
-- [SaaS / SCRM 决策实战](/ecosystem/saas-scrm/) —— 看完整的生产级落地架构

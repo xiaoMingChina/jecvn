@@ -104,5 +104,4 @@ Agent 决定调用工具
 
 ## 下一步
 
-- [SaaS / SCRM 决策实战](/ecosystem/saas-scrm/) —— 把生态里的思路落到你自己的业务系统
 - [Choice / Noul / Score 原理](/primitives/types/) —— 看懂上述项目用到的原子操作

@@ -281,4 +281,3 @@ if (urgent > 0.7 || priority >= 3.5) {
 ## 下一步
 
 - [系统一 vs 通用 LLM 对比](/primitives/comparison/) —— 判断某个任务到底该用哪种模型
-- [SaaS / SCRM 决策实战](/ecosystem/saas-scrm/) —— 把这三个原子操作组装成生产级流水线

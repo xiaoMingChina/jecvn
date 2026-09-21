@@ -125,4 +125,3 @@ Jev 与通用 LLM 最根本的区别不在参数量或训练数据，而在**输
 ## 下一步
 
 - [Choice / Noul / Score 原理](/primitives/types/) —— 掌握三种原子操作的细节
-- [SaaS / SCRM 决策实战](/ecosystem/saas-scrm/) —— 看这套架构在真实业务里的完整实现

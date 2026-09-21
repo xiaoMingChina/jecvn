@@ -73,7 +73,6 @@ export default defineConfig({
 						{ label: '加入中文社区', link: '/community/join/' },
 						{ label: '贡献指南', link: '/community/contributing/' },
 						{ label: '全球开源项目收录 (Showcase)', link: '/ecosystem/showcase/' },
-						{ label: 'SaaS / SCRM 决策实战', link: '/ecosystem/saas-scrm/' },
 					],
 				},
 			],
