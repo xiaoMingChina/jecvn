@@ -31,3 +31,12 @@ test('示例库 ID 唯一，所有场景满足 API 输入约束并覆盖三种�
     assert.ok(item.tip && item.title && item.description, item.id);
   }
 });
+
+test('结果视图保留零概率，Choice 按概率排序，Score 按档位排序', async () => {
+  const { resultView } = await import('../src/lib/playground-result.mjs');
+  assert.deepEqual(resultView({type:'choice',choice:'晴',probabilities:{雨:0,晴:1},confidence:0}).rows,[['晴',1],['雨',0]]);
+  assert.deepEqual(resultView({type:'noul',noul:0}).rows,[['是',0],['否',1]]);
+  const score=resultView({type:'score',score:0.75,probabilities:{1:0.75,0:0.25},legend:{0:'低',1:'高'}});
+  assert.deepEqual(score.rows,[['0 · 低',0.25],['1 · 高',0.75]]);
+  assert.equal(resultView({type:'noul',noul:2}),null);
+});

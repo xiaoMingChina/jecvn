@@ -2,19 +2,19 @@
 import { examples } from '../lib/playground-examples.mjs';
 ---
 <section class="pg" aria-label="Jev Playground">
-  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>线上通过 JevCN 的 Cloudflare Worker 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p><a href="/lab/playground-guide/">使用指南 ↗</a></p><p id="pg-connection">线上模式：你的 Key 与输入会经 JevCN 的 Cloudflare Worker 转发给 TypeSafe 官方 API。接口不保存 Key、不记录请求内容。</p></div>
+  <p class="pg-help">自带 API Key · 经本站 Cloudflare 转发给官方，不保存 Key 或记录请求内容 · 手动运行可能产生费用</p>
   <div class="pg-workspace"><form id="pg-form">
     <fieldset><legend>1 / 连接设置</legend>
       <label for="pg-key">你的 TypeSafe API Key</label>
       <div class="pg-key-row"><input id="pg-key" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="输入你自己的 Key" /><button id="pg-clear" type="button">清除 Key</button></div>
       <label class="pg-check"><input id="pg-remember" type="checkbox" />在此浏览器记住 Key</label>
-      <p class="pg-help">勾选后保存到此网站的浏览器本地存储，刷新和关闭后仍保留。不是加密保险箱，同源脚本及有权限的扩展可能读取；共用电脑请勿勾选。取消勾选会删除已保存副本。</p>
+      <p class="pg-help">仅在可信设备保存；同源脚本可读取。取消勾选即删除。</p>
       <p id="pg-storage" role="status">未保存 Key；只在本页使用。</p>
-      <label for="pg-model">模型</label><input id="pg-model" value="jev-latest" maxlength="100" spellcheck="false" />
+      <details><summary>模型设置</summary><label for="pg-model">模型</label><input id="pg-model" value="jev-latest" maxlength="100" spellcheck="false" /></details>
     </fieldset>
     <fieldset id="pg-editors"><legend>2 / 设计一次判断</legend>
       <label for="pg-type">问题类型</label><select id="pg-type"><option value="choice">Choice · 有限选项</option><option value="noul">Noul · 是非概率</option><option value="score">Score · 有序评分</option></select>
-      <button id="pg-example" type="button">载入当前类型的中文示例</button><p class="pg-help">载入示例会替换下方输入、问题与标准，不会发送请求。</p>
+
       <label for="pg-state">输入状态</label><textarea id="pg-state" rows="4" maxlength="20000"></textarea>
       <label for="pg-instructions">要判断的问题</label><textarea id="pg-instructions" rows="3" maxlength="5000"></textarea>
       <label for="pg-criteria">选项 / 评价标准（JSON）</label><textarea id="pg-criteria" rows="8" maxlength="20000" spellcheck="false"></textarea>
@@ -23,8 +23,10 @@ import { examples } from '../lib/playground-examples.mjs';
     <div class="pg-actions"><button id="pg-run" type="submit">运行 1 次请求</button><button id="pg-cancel" type="button" disabled>取消等待</button><button id="pg-preview" type="button">预览请求（不发送）</button></div>
   </form>
   <div class="pg-results">
-  <section class="pg-library" aria-labelledby="pg-library-title">
-    <h2 id="pg-library-title">从一个有趣的问题开始</h2>
+  <p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
+  <section aria-labelledby="pg-output-title"><h2 id="pg-output-title">判断结果</h2><p id="pg-summary" class="pg-help">运行后显示概率分布与耗时。</p><div id="pg-visual" aria-live="polite"><p>选一个示例，看看模型如何判断。</p></div><details id="pg-raw"><summary id="pg-raw-label">原始 JSON</summary><pre class="pg-output" tabindex="0"><code id="pg-output">等待运行或预览请求。</code></pre><button id="pg-download" type="button" disabled>下载结果 JSON</button></details></section>
+  <details class="pg-library" id="pg-library"><summary>选择中文示例 · 9 个场景</summary>
+    
     <p class="pg-help">9 个中文原创场景。点击卡片替换编辑区，不会自动运行；也没有预填模型答案。</p>
     <div class="pg-filters" role="group" aria-label="筛选示例类型">
       <button type="button" data-example-filter="all" aria-pressed="true">全部</button>
@@ -36,14 +38,13 @@ import { examples } from '../lib/playground-examples.mjs';
       {['趣味判断', '开发实践'].map(group => <section data-example-group><h3>{group}</h3><div class="pg-example-grid">{examples.filter(item => item.group === group).map(item => <button type="button" class="pg-example-card" data-example-id={item.id} data-example-type={item.type} aria-pressed="false"><span class="pg-card-top"><span class="pg-card-icon" aria-hidden="true">{item.icon}</span><span class="pg-card-type">{item.type}</span></span><strong>{item.title}</strong><span>{item.description}</span></button>)}</div></section>)}
     </div>
     <aside class="pg-experiment-tip" aria-live="polite"><strong id="pg-example-title">当前示例：中文提问该交给谁？</strong><p id="pg-example-tip">试试否定、中英混写或多个诉求。</p></aside>
-  </section>
-  <p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
-  <section aria-labelledby="pg-output-title"><h2 id="pg-output-title">运行结果</h2><p id="pg-summary">尚未调用模型，没有示意结果。</p><pre class="pg-output" tabindex="0"><code id="pg-output">等待运行或预览请求。</code></pre><button id="pg-download" type="button" disabled>下载结果 JSON</button><p class="pg-help">下载文件不含认证头或 Key。输入与模型返回可能包含你提供的内容，分享前请检查。耗时为浏览器测量的端到端等待时间。</p></section>
+  </details>
   </div></div>
   <noscript>Playground 需要 JavaScript；文档与公开实践仍可正常阅读。</noscript>
 </section>
 <script>
 import { examples } from '../lib/playground-examples.mjs';
+import { renderResult } from '../lib/playground-result.mjs';
 import { makePayload, requestDecision, redact, STORAGE_KEY } from '../lib/playground.mjs';
 const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const key = el<HTMLInputElement>('pg-key');
@@ -78,7 +79,7 @@ try {
 } catch { storage.textContent = '本地存储不可用，Key 仅在本页使用。'; }
 remember.addEventListener('change', saveKey);
 key.addEventListener('input', saveKey);
-function clearResult() { exportText = ''; download.disabled = true; output.textContent = '等待运行或预览请求。'; summary.textContent = '尚未调用模型，没有示意结果。'; }
+function clearResult() { exportText = ''; download.disabled = true; output.textContent = '等待运行或预览请求。'; summary.textContent = '运行后显示概率分布与耗时。'; el('pg-visual').textContent = '等待运行，尚无模型结果。'; el<HTMLDetailsElement>('pg-raw').open = false; el('pg-raw-label').textContent = '原始 JSON'; }
 el('pg-clear').addEventListener('click', () => { controller?.abort(); key.value = ''; remember.checked = false; saveKey(); clearResult(); status.textContent = 'Key 已从输入框清除；本地存储状态见上方提示。'; });
 function help() { el('pg-criteria-help').textContent = ({ choice: 'Choice 使用“选项名称 → 描述”的对象。', noul: 'Noul 使用 true / false 字段描述两种结果。', score: 'Score 使用从低到高排列的数组，档位从 0 开始。' })[type.value]!; }
 const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-example-id]'));
@@ -91,11 +92,12 @@ function loadExample(id: string) {
   cards.forEach(card => card.setAttribute('aria-pressed', String(card.dataset.exampleId === id)));
   el('pg-example-title').textContent = `当前示例：${value.title}`;
   el('pg-example-tip').textContent = value.tip;
+  el<HTMLDetailsElement>('pg-library').open = false;
   status.textContent = `已载入“${value.title}”，未发送请求。可以修改输入或预览请求。`;
 }
 loadExample('routing');
 type.addEventListener('change', help);
-el('pg-example').addEventListener('click', () => loadExample(({ choice: 'routing', noul: 'evidence', score: 'tutorial' })[type.value]!));
+
 cards.forEach(card => card.addEventListener('click', () => loadExample(card.dataset.exampleId!)));
 document.querySelectorAll<HTMLButtonElement>('[data-example-filter]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-example-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
@@ -104,11 +106,11 @@ document.querySelectorAll<HTMLButtonElement>('[data-example-filter]').forEach(bu
 }));
 [state, instructions, criteria, type].forEach(input => input.addEventListener('input', () => {
   cards.forEach(card => card.setAttribute('aria-pressed', 'false'));
-  el('pg-example-title').textContent = '已修改 · 自定义试验';
+  el('pg-example-title').textContent = '已修改 · 自定义试验'; clearResult(); status.textContent = '输入已修改，请重新运行。';
 }));
 function payload() { return makePayload({ type: type.value, model: el<HTMLInputElement>('pg-model').value, state: state.value, instructions: instructions.value, criteria: criteria.value }); }
 el('pg-preview').addEventListener('click', () => {
-  try { const body = payload(); clearResult(); output.textContent = redact(JSON.stringify(body, null, 2), key.value.trim()); status.textContent = '仅预览请求体，没有发送网络请求。'; }
+  try { const body = payload(); clearResult(); output.textContent = redact(JSON.stringify(body, null, 2), key.value.trim()); el<HTMLDetailsElement>('pg-raw').open = true; el('pg-raw-label').textContent = '请求预览（未发送）'; status.textContent = '仅预览请求体，没有发送网络请求。'; }
   catch (error) { status.textContent = redact((error as Error).message, key.value.trim()); }
 });
 el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
@@ -126,8 +128,10 @@ el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
     if (active.signal.aborted) return;
     const elapsedMs = Math.round(performance.now() - start);
     exportText = redact(JSON.stringify({ capturedAt: new Date().toISOString(), elapsedMs, request: body, response: data }, null, 2), secret);
-    output.textContent = redact(JSON.stringify(data, null, 2), secret);
-    summary.textContent = redact(`实际模型：${String(data.model ?? '未返回')} · 端到端耗时：${elapsedMs} ms`, secret);
+    const safeData = JSON.parse(redact(JSON.stringify(data), secret));
+    renderResult(el('pg-visual'), safeData.answers.result);
+    output.textContent = JSON.stringify(safeData, null, 2);
+    summary.textContent = redact(`实际模型：${String(data.model ?? '未返回')} · 请求总耗时：${elapsedMs} ms`, secret);
     download.disabled = false; status.textContent = '请求完成。结果来自真实 API 返回。';
   } catch (error) {
     status.textContent = active.signal.aborted ? (timedOut ? '等待超过 30 秒，已停止等待；服务端可能仍已处理并计费。' : '已取消等待；服务端可能仍已处理并计费。') : error instanceof TypeError ? '无法连接线上接口，请检查网络或稍后手动重试。' : redact((error as Error).message, secret);
@@ -193,4 +197,18 @@ window.addEventListener('pageshow', event => { if (event.persisted) { try { key.
 .pg-experiment-tip p { margin-top: .4rem; color: var(--sl-color-gray-2); }
 @media(max-width:50rem) { .pg-example-groups { max-height: none; } }
 @media(max-width:24rem) { .pg-example-grid { grid-template-columns: 1fr; } }
+
+.pg details { border-top: 1px solid var(--pg-border); padding-top: .8rem; margin-top: 1rem; }
+.pg summary { cursor: pointer; font-weight: 600; }
+.pg-results { position: sticky; top: calc(var(--sl-nav-height) + 1rem); }
+.pg-results .pg-output { min-height: 0; }
+.pg :global(#pg-visual h3) { font-size: 1.8rem; color: var(--cn-accent); overflow-wrap: anywhere; margin: 1rem 0; }
+.pg :global(.pg-probability) { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .35rem 1rem; margin: 1rem 0; }
+.pg :global(.pg-probability span) { overflow-wrap: anywhere; }
+.pg :global(.pg-probability strong) { font-variant-numeric: tabular-nums; }
+.pg :global(.pg-probability progress) { grid-column: 1 / -1; width: 100%; height: .6rem; appearance: none; border: 0; border-radius: 1rem; overflow: hidden; background: var(--sl-color-gray-5); }
+.pg :global(progress::-webkit-progress-bar) { background: var(--sl-color-gray-5); }
+.pg :global(progress::-webkit-progress-value) { background: var(--cn-accent); }
+.pg :global(progress::-moz-progress-bar) { background: var(--cn-accent); }
+@media(max-width:50rem) { .pg-results { position: static; } }
 </style>
