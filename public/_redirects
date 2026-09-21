@@ -1,0 +1,2 @@
+# Serve the exact Baidu verification URL without automatic .html canonicalization.
+/baidu_verify_codeva-RejRa9F518.html /baidu_verify_codeva-RejRa9F518.txt 200
