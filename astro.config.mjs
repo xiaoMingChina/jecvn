@@ -68,11 +68,20 @@ export default defineConfig({
 					],
 				},
 				{
-					label: '社区与生态',
+					label: '生态资料库',
+					items: [
+						{ label: '全球项目精选', link: '/ecosystem/showcase/' },
+						{ label: '排行榜与资源导航', link: '/ecosystem/rankings/' },
+						{ label: '公开评测怎么读', link: '/ecosystem/benchmarks/' },
+						{ label: '中文实践路线', link: '/ecosystem/practices/' },
+						{ label: '官方资料与动态', link: '/ecosystem/official/' },
+					],
+				},
+				{
+					label: '社区共建',
 					items: [
 						{ label: '加入中文社区', link: '/community/join/' },
 						{ label: '贡献指南', link: '/community/contributing/' },
-						{ label: '全球开源项目收录 (Showcase)', link: '/ecosystem/showcase/' },
 					],
 				},
 			],
