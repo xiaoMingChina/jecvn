@@ -24,7 +24,9 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-			title: 'Jev 中文社区 (JevCN)',
+			title: 'JevCN / 中文社区',
+			customCss: ['./src/styles/custom.css'],
+			components: { Hero: './src/components/Hero.astro' },
 			description: '面向软件工程决策的 System 1 强类型毫秒级模型中文指南',
 			favicon: '/favicon.svg',
 			editLink: { baseUrl: 'https://github.com/xiaoMingChina/jevcn/edit/main/' },

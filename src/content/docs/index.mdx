@@ -1,35 +1,11 @@
 ---
 title: Jev 中文开发者门户
-description: Jev 中文开发者指南：从 SDK 入门到工程实践，探索轻量、低延迟的强类型概率语义决策。
+description: 用中文理解 Jev，从 SDK 入门到概率语义决策的工程实践。探索中文指南、开源项目与开发者社区。
 template: splash
 hero:
-  tagline: 从中文指南到工程实践，让轻量、低延迟的概率语义决策融入你的应用。
-  actions:
-    - text: 3 分钟上手 SDK
-      link: /getting-started/quickstart/
-      icon: right-arrow
-      variant: primary
-    - text: 加入中文社区
-      link: /community/join/
-      icon: right-arrow
-      variant: minimal
+  title: 让 AI 决策，成为代码的直觉。
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import HomeContent from '../../components/HomeContent.astro';
 
-## 核心特性
-
-<CardGrid stagger>
-	<Card icon="rocket" title="毫秒级决策 (70ms - 500ms)">
-		基于非自回归并行采样与 RLCD 架构，比传统通用大模型快 20~200 倍，无缝嵌入代码主循环。
-	</Card>
-	<Card icon="approve-check" title="强类型与零幻觉">
-		输出仅限 `Choice`、`Noul`（概率）、`Score`（打分），消除了 JSON 语法破损与自由生成的胡说八道。
-	</Card>
-	<Card icon="bars" title="颠覆性的经济模型">
-		输入成本低至 $0.042 / 百万 Token，输出 Token 完全免费（$0），高频决策无需担心账单暴增。
-	</Card>
-	<Card icon="puzzle" title="软件原生状态机">
-		代码负责执行与确定性流转，Jev 负责提供快速直觉。完美的 Agent 前置守门员（Guardrail）。
-	</Card>
-</CardGrid>
+<HomeContent />
