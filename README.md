@@ -18,10 +18,10 @@ Jev 中文社区 · 面向软件工程决策的 System 1 强类型毫秒级模�
 
 ## 本地开发
 
-需要 **Node.js 20+**。
+需要 **Node.js 22.12.0 或更高的 22.x 版本**（与当前 Astro 版本要求一致）。
 
 ```bash
-npm install
+npm ci
 npm run dev      # 开发服务器 → http://localhost:4321
 ```
 
@@ -40,6 +40,14 @@ npx astro dev stop      # 停止
 npm run build    # 产出静态站点到 ./dist/
 npm run preview  # 本地预览构建结果
 ```
+
+## Cloudflare Pages 部署
+
+- Root Directory：留空（项目位于仓库根目录）。
+- Build command：`npm run build`。
+- Build output directory：`dist`。
+- Node.js：根目录的 `.nvmrc` 和 `.node-version` 均指定 `22`；如控制台配置了 `NODE_VERSION`，请同步设置为 `22`。
+- 依赖由已提交的 `package-lock.json` 锁定，本地使用 `npm ci` 安装。
 
 ## 目录结构
 
