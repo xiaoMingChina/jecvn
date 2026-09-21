@@ -183,3 +183,7 @@ header.header { border-bottom: 1px solid var(--cn-line); }
   .cn-home-nav { gap: 12px 20px; }
   .cn-feature-results strong { font-size: 21px; }
 }
+
+.cn-wechat-figure { max-width: 360px; margin-inline: auto; }
+.cn-wechat-figure img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.cn-wechat-figure figcaption { font-size: 13px; color: var(--sl-color-gray-2); line-height: 1.7; margin-top: 12px; }
