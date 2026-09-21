@@ -1,6 +1,6 @@
 <section class="pg" aria-label="Jev Playground">
-  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>本地版通过你电脑上的官方 SDK 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p id="pg-connection">线上为请求编辑与预览模式。真实调用请按下方说明启动本地版；官方目前不允许本站浏览器直连。</p></div>
-  <form id="pg-form">
+  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>本地版通过你电脑上的官方 SDK 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p><a href="/lab/playground-guide/">本地启动与使用指南 ↗</a></p><p id="pg-connection">线上为请求编辑与预览模式。真实调用请查看使用指南启动本地版；官方目前不允许本站浏览器直连。</p></div>
+  <div class="pg-workspace"><form id="pg-form">
     <fieldset><legend>1 / 连接设置</legend>
       <label for="pg-key">你的 TypeSafe API Key</label>
       <div class="pg-key-row"><input id="pg-key" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="输入你自己的 Key" /><button id="pg-clear" type="button">清除 Key</button></div>
@@ -19,8 +19,9 @@
     </fieldset>
     <div class="pg-actions"><button id="pg-run" type="submit">运行 1 次请求</button><button id="pg-cancel" type="button" disabled>取消等待</button><button id="pg-preview" type="button">预览请求（不发送）</button></div>
   </form>
-  <p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
+  <div class="pg-results"><p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
   <section aria-labelledby="pg-output-title"><h2 id="pg-output-title">运行结果</h2><p id="pg-summary">尚未调用模型，没有示意结果。</p><pre class="pg-output" tabindex="0"><code id="pg-output">等待运行或预览请求。</code></pre><button id="pg-download" type="button" disabled>下载结果 JSON</button><p class="pg-help">下载文件不含认证头或 Key。输入与模型返回可能包含你提供的内容，分享前请检查。耗时为浏览器测量的端到端等待时间。</p></section>
+  </div></div>
   <noscript>Playground 需要 JavaScript；文档与公开实践仍可正常阅读。</noscript>
 </section>
 <script>
@@ -134,4 +135,11 @@ window.addEventListener('pageshow', event => { if (event.persisted) { try { key.
 #pg-example { margin-top: 1rem; }
 .pg-output { max-height: 32rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
 #pg-status { border-block: 1px solid var(--pg-border); padding-block: 1rem; }
+
+.pg-workspace { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 2rem; align-items: start; }
+.pg-workspace > * { min-width: 0; }
+.pg-results { position: sticky; top: calc(var(--sl-nav-height) + 1rem); border: 1px solid var(--pg-border); border-radius: .5rem; padding: 1.25rem; margin-top: 1.5rem; background: var(--sl-color-bg-nav); }
+.pg-results h2 { font-size: 1.4rem; }
+.pg-results .pg-output { min-height: 16rem; background: var(--sl-color-bg); }
+@media(max-width: 50rem) { .pg-workspace { grid-template-columns: 1fr; gap: 0; } .pg-results { position: static; } }
 </style>

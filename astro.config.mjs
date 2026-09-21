@@ -26,7 +26,7 @@ export default defineConfig({
 		starlight({
 			title: 'JevCN / 中文社区',
 			customCss: ['./src/styles/custom.css'],
-			components: { Hero: './src/components/Hero.astro' },
+			components: { Hero: './src/components/Hero.astro', SocialIcons: './src/components/HeaderLinks.astro' },
 			description: '面向软件工程决策的 System 1 强类型毫秒级模型中文指南',
 			favicon: '/favicon.svg',
 			editLink: { baseUrl: 'https://github.com/xiaoMingChina/jevcn/edit/main/' },
@@ -53,6 +53,7 @@ export default defineConfig({
 				},
 			],
 			sidebar: [
+				{ label: '↗ Playground 试验场', link: '/playground/' },
 				{
 					label: '快速开始',
 					items: [
@@ -70,7 +71,7 @@ export default defineConfig({
 				{
 					label: '观察与实践',
 					items: [
-						{ label: 'Playground · 中文试验场', link: '/playground/' },
+						{ label: 'Playground 使用指南', link: '/lab/playground-guide/' },
 						{ label: 'Jev 中文观察', link: '/updates/' },
 						{ label: '001 · 项目、评测与版本', link: '/updates/001/' },
 						{ label: '实践 001 · 中文提问分流', link: '/lab/chinese-routing/' },

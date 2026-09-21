@@ -187,3 +187,15 @@ header.header { border-bottom: 1px solid var(--cn-line); }
 .cn-wechat-figure { max-width: 360px; margin-inline: auto; }
 .cn-wechat-figure img { display: block; width: 100%; height: auto; border-radius: 12px; }
 .cn-wechat-figure figcaption { font-size: 13px; color: var(--sl-color-gray-2); line-height: 1.7; margin-top: 12px; }
+
+.pg-workspace-heading { padding: 2rem 0 .5rem; }
+.pg-workspace-heading h1 { font-size: clamp(2.2rem,5vw,3.5rem); letter-spacing: -.04em; margin: .4rem 0; }
+.pg-workspace-heading > p:last-child { color: var(--cn-muted); }
+.pg-workspace-nav { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem 0 1.5rem; }
+.pg-workspace-nav a { font-size: .9rem; color: var(--cn-accent); text-decoration: none; }
+.cn-playground-entry { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 2rem; margin: 2rem 0 !important; border: 1px solid var(--cn-line); border-radius: .5rem; background: var(--cn-panel); }
+.cn-playground-entry h2 { margin: .5rem 0 !important; font-size: 1.65rem; }
+.cn-playground-entry p { color: var(--cn-muted); font-size: .9rem; }
+.cn-playground-entry .cn-kicker { color: var(--cn-accent); }
+.cn-playground-entry .cn-button { flex-shrink: 0; margin-top: 0; }
+@media(max-width:48rem) { .cn-playground-entry { align-items: start; flex-direction: column; padding: 1.5rem; gap: 1rem; } }

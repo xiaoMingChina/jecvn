@@ -1,8 +1,9 @@
 ---
 import DefaultHero from '@astrojs/starlight/components/Hero.astro';
+const playground = Astro.locals.starlightRoute.entry.id === 'playground' || Astro.locals.starlightRoute.entry.id === 'playground/index';
 const home = Astro.locals.starlightRoute.id === '' || Astro.locals.starlightRoute.entry.id === 'index';
 ---
-{home ? (
+{playground ? (<section class="pg-workspace-heading"><p class="cn-kicker">JEV / 中文试验场</p><h1 id="_top" data-page-title>Playground</h1><p>编辑一个问题，观察一次决策。Choice · Noul · Score</p></section>) : home ? (
 <section class="cn-hero" aria-labelledby="_top">
   <div class="cn-eyebrow"><span class="cn-dot"></span> JEV / 中文开发者社区 <span class="cn-edition">中文优先 · 面向全球生态</span></div>
   <div class="cn-hero-grid">
@@ -10,7 +11,7 @@ const home = Astro.locals.starlightRoute.id === '' || Astro.locals.starlightRout
       <p class="cn-kicker">小模型，大有可为。</p>
       <h1 id="_top" data-page-title>让 AI 决策，<br />成为代码的<span class="cn-highlight">直觉。</span></h1>
       <p class="cn-lead">用中文发现、理解和验证 Jev。<br />读全球项目，做本地实验，记录成功与失败，<br class="cn-desktop-break" />一起积累可以复查的开发经验。</p>
-      <div class="cn-actions"><a class="cn-button cn-primary" href="/getting-started/quickstart/">开始构建 <span aria-hidden="true">↗</span></a><a class="cn-button cn-secondary" href="/community/join/">加入中文社区 <span aria-hidden="true">↗</span></a></div>
+      <div class="cn-actions"><a class="cn-button cn-primary" href="/getting-started/quickstart/">开始构建 <span aria-hidden="true">↗</span></a><a class="cn-button cn-secondary" href="/playground/">打开 Playground <span aria-hidden="true">↗</span></a></div>
       <div class="cn-hero-note"><span>中文指南</span><span>开源共建</span><span>工程实践</span></div>
     </div>
     <div class="cn-lab" aria-label="决策示例工作台">
