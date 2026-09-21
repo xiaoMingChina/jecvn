@@ -1,49 +1,76 @@
-# Starlight Starter Kit: Basics
+# jecvn
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Jev 中文社区 · 面向软件工程决策的 System 1 强类型毫秒级模型中文指南
 
+> 站点域名：[jevcn.com](https://jevcn.com)
+
+## 这是什么
+
+[Jev](https://typesafe.ai) 是 TypeSafe AI 推出的 System 1（系统一）决策模型：输入非结构化的 `state`，输出**强类型的概率化决策**。它不生成文本，只回答你预先定义好的问题，并在 70–500ms 内返回带校准概率的答案。
+
+本项目是它的**中文开发者门户**，基于 Astro + Starlight 构建，包含：
+
+| 章节 | 内容 |
+| --- | --- |
+| 快速开始 | 核心概念（杰文斯悖论 / 卡尼曼系统一）、SDK 三分钟上手 |
+| 核心原子机制 | `Choice` / `Noul` / `Score` 三大原子操作详解；系统一与通用 LLM 的对比与分工 |
+| 前沿生态与案例 | 全球开源项目收录；SaaS / SCRM 决策实战指南 |
+
+## 本地开发
+
+需要 **Node.js 20+**。
+
+```bash
+npm install
+npm run dev      # 开发服务器 → http://localhost:4321
 ```
-npm create astro@latest -- --template starlight
+
+用后台模式跑开发服务器（便于管理与查看日志）：
+
+```bash
+npx astro dev --background
+npx astro dev status    # 查看状态
+npx astro dev logs      # 查看日志
+npx astro dev stop      # 停止
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 构建与预览
 
-## 🚀 Project Structure
+```bash
+npm run build    # 产出静态站点到 ./dist/
+npm run preview  # 本地预览构建结果
+```
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## 目录结构
 
 ```
 .
-├── public/
+├── astro.config.mjs          # 站点配置：site / 中文 locale / 侧边栏
 ├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   ├── assets/               # 图片资源
+│   ├── content.config.ts     # 内容集合定义
+│   └── content/docs/         # 所有文档页面（.md / .mdx）
+│       ├── index.mdx         # splash 首页
+│       ├── getting-started/  # 快速开始
+│       ├── primitives/       # 核心原子机制
+│       └── ecosystem/        # 生态与案例
+└── public/                   # 静态资源（favicon 等）
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+侧边栏在 `astro.config.mjs` 的 `sidebar` 字段中维护；`src/content/docs/` 下的每个 `.md` / `.mdx` 文件按路径自动成为一个路由。
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+## 内容勘误
 
-Static assets, like favicons, can be placed in the `public/` directory.
+文档中的 SDK 用法基于 `@typesafe-ai/sdk` **0.6.0** 的真实类型声明编写。若官方 API 有变更，请以 [官方文档](https://docs.typesafe.ai) 为准。
 
-## 🧞 Commands
+## 相关链接
 
-All commands are run from the root of the project, from a terminal:
+- 官方博客：<https://typesafe.ai/blog/introducing-system-one-models-and-jev>
+- 官方控制台：<https://console.typesafe.ai>
+- 官方文档：<https://docs.typesafe.ai>
+- JS/TS SDK 源码：<https://github.com/typesafe-ai/typesafe-sdk-js>
+- 开源项目合集：<https://github.com/cobanov/awesome-jev>
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 许可
 
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+文档内容版权归各自作者所有；Jev 及相关商标归 TypeSafe AI 所有。
