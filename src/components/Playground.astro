@@ -1,0 +1,137 @@
+<section class="pg" aria-label="Jev Playground">
+  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>本地版通过你电脑上的官方 SDK 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p id="pg-connection">线上为请求编辑与预览模式。真实调用请按下方说明启动本地版；官方目前不允许本站浏览器直连。</p></div>
+  <form id="pg-form">
+    <fieldset><legend>1 / 连接设置</legend>
+      <label for="pg-key">你的 TypeSafe API Key</label>
+      <div class="pg-key-row"><input id="pg-key" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="输入你自己的 Key" /><button id="pg-clear" type="button">清除 Key</button></div>
+      <label class="pg-check"><input id="pg-remember" type="checkbox" />在此浏览器记住 Key</label>
+      <p class="pg-help">勾选后保存到此网站的浏览器本地存储，刷新和关闭后仍保留。不是加密保险箱，同源脚本及有权限的扩展可能读取；共用电脑请勿勾选。取消勾选会删除已保存副本。</p>
+      <p id="pg-storage" role="status">未保存 Key；只在本页使用。</p>
+      <label for="pg-model">模型</label><input id="pg-model" value="jev-latest" maxlength="100" spellcheck="false" />
+    </fieldset>
+    <fieldset id="pg-editors"><legend>2 / 设计一次判断</legend>
+      <label for="pg-type">问题类型</label><select id="pg-type"><option value="choice">Choice · 有限选项</option><option value="noul">Noul · 是非概率</option><option value="score">Score · 有序评分</option></select>
+      <button id="pg-example" type="button">载入当前类型的中文示例</button><p class="pg-help">载入示例会替换下方输入、问题与标准，不会发送请求。</p>
+      <label for="pg-state">输入状态</label><textarea id="pg-state" rows="4" maxlength="20000"></textarea>
+      <label for="pg-instructions">要判断的问题</label><textarea id="pg-instructions" rows="3" maxlength="5000"></textarea>
+      <label for="pg-criteria">选项 / 评价标准（JSON）</label><textarea id="pg-criteria" rows="8" maxlength="20000" spellcheck="false"></textarea>
+      <p id="pg-criteria-help" class="pg-help">Choice 使用“选项名称 → 描述”的对象。</p>
+    </fieldset>
+    <div class="pg-actions"><button id="pg-run" type="submit">运行 1 次请求</button><button id="pg-cancel" type="button" disabled>取消等待</button><button id="pg-preview" type="button">预览请求（不发送）</button></div>
+  </form>
+  <p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
+  <section aria-labelledby="pg-output-title"><h2 id="pg-output-title">运行结果</h2><p id="pg-summary">尚未调用模型，没有示意结果。</p><pre class="pg-output" tabindex="0"><code id="pg-output">等待运行或预览请求。</code></pre><button id="pg-download" type="button" disabled>下载结果 JSON</button><p class="pg-help">下载文件不含认证头或 Key。输入与模型返回可能包含你提供的内容，分享前请检查。耗时为浏览器测量的端到端等待时间。</p></section>
+  <noscript>Playground 需要 JavaScript；文档与公开实践仍可正常阅读。</noscript>
+</section>
+<script>
+import { presets, makePayload, requestDecision, redact, STORAGE_KEY } from '../lib/playground.mjs';
+const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const key = el<HTMLInputElement>('pg-key');
+const remember = el<HTMLInputElement>('pg-remember');
+const storage = el('pg-storage');
+const type = el<HTMLSelectElement>('pg-type');
+const state = el<HTMLTextAreaElement>('pg-state');
+const instructions = el<HTMLTextAreaElement>('pg-instructions');
+const criteria = el<HTMLTextAreaElement>('pg-criteria');
+const status = el('pg-status');
+const output = el('pg-output');
+const summary = el('pg-summary');
+const run = el<HTMLButtonElement>('pg-run');
+const cancel = el<HTMLButtonElement>('pg-cancel');
+const download = el<HTMLButtonElement>('pg-download');
+const local = location.origin === 'http://127.0.0.1:4322';
+let controller: AbortController | undefined;
+let exportText = '';
+function saveKey() {
+  try {
+    if (remember.checked && key.value.trim()) {
+      localStorage.setItem(STORAGE_KEY, key.value.trim());
+      storage.textContent = 'Key 已保存在此浏览器。可随时清除。';
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+      storage.textContent = '未保存 Key；只在本页使用。';
+    }
+  } catch { remember.checked = false; storage.textContent = '浏览器拒绝访问本地存储；请检查浏览器的网站数据设置。当前 Key 仍可在本页使用。'; }
+}
+try {
+  const saved = local ? localStorage.getItem(STORAGE_KEY) : null;
+  if (saved) { key.value = saved; remember.checked = true; storage.textContent = '已从此浏览器恢复 Key。'; }
+} catch { storage.textContent = '本地存储不可用，Key 仅在本页使用。'; }
+if (!local) {
+  key.disabled = true; remember.disabled = true; run.disabled = true;
+  run.textContent = '请在本地版运行';
+  status.textContent = '线上预览已就绪，可编辑示例并预览请求，无需 Key。';
+  storage.textContent = '线上预览无需填写 Key。启动本地版后可输入并选择记住。';
+} else { el('pg-connection').textContent = '本地运行模式：浏览器 → 本机服务 → TypeSafe 官方 SDK / API。Key 不经过 JevCN 远端服务器。'; }
+remember.addEventListener('change', saveKey);
+key.addEventListener('input', saveKey);
+function clearResult() { exportText = ''; download.disabled = true; output.textContent = '等待运行或预览请求。'; summary.textContent = '尚未调用模型，没有示意结果。'; }
+el('pg-clear').addEventListener('click', () => { controller?.abort(); key.value = ''; remember.checked = false; saveKey(); clearResult(); status.textContent = 'Key 已从输入框清除；本地存储状态见上方提示。'; });
+function help() { el('pg-criteria-help').textContent = ({ choice: 'Choice 使用“选项名称 → 描述”的对象。', noul: 'Noul 使用 true / false 字段描述两种结果。', score: 'Score 使用从低到高排列的数组，档位从 0 开始。' })[type.value]!; }
+function example() {
+  const value = presets[type.value as keyof typeof presets];
+  state.value = value.state; instructions.value = value.instructions; criteria.value = JSON.stringify(value.criteria, null, 2); help(); clearResult();
+}
+example();
+type.addEventListener('change', help);
+el('pg-example').addEventListener('click', example);
+function payload() { return makePayload({ type: type.value, model: el<HTMLInputElement>('pg-model').value, state: state.value, instructions: instructions.value, criteria: criteria.value }); }
+el('pg-preview').addEventListener('click', () => {
+  try { const body = payload(); clearResult(); output.textContent = redact(JSON.stringify(body, null, 2), key.value.trim()); status.textContent = '仅预览请求体，没有发送网络请求。'; }
+  catch (error) { status.textContent = redact((error as Error).message, key.value.trim()); }
+});
+el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
+  event.preventDefault(); if (controller || !local) return;
+  let body; try { body = payload(); if (!key.value.trim()) throw new Error('请先填写自己的 API Key。'); } catch (error) { status.textContent = (error as Error).message; return; }
+  const secret = key.value.trim();
+  saveKey(); clearResult(); controller = new AbortController();
+  const active = controller; let timedOut = false;
+  const timer = setTimeout(() => { timedOut = true; active.abort(); }, 30000);
+  run.disabled = true; cancel.disabled = false;
+  el<HTMLFieldSetElement>('pg-editors').disabled = true; el<HTMLButtonElement>('pg-preview').disabled = true;
+  status.textContent = '正在通过本地 SDK 请求官方 API…'; const start = performance.now();
+  try {
+    const data = await requestDecision({ key: secret, payload: body, signal: active.signal, endpoint: '/api/systemone' });
+    if (active.signal.aborted) return;
+    const elapsedMs = Math.round(performance.now() - start);
+    exportText = redact(JSON.stringify({ capturedAt: new Date().toISOString(), elapsedMs, request: body, response: data }, null, 2), secret);
+    output.textContent = redact(JSON.stringify(data, null, 2), secret);
+    summary.textContent = redact(`实际模型：${String(data.model ?? '未返回')} · 端到端耗时：${elapsedMs} ms`, secret);
+    download.disabled = false; status.textContent = '请求完成。结果来自真实 API 返回。';
+  } catch (error) {
+    status.textContent = active.signal.aborted ? (timedOut ? '等待超过 30 秒，已停止等待；服务端可能仍已处理并计费。' : '已取消等待；服务端可能仍已处理并计费。') : error instanceof TypeError ? '无法连接本地服务，请确认本地 Playground 仍在运行。没有自动重试。' : redact((error as Error).message, secret);
+  } finally {
+    clearTimeout(timer); controller = undefined; run.disabled = false; cancel.disabled = true;
+    el<HTMLFieldSetElement>('pg-editors').disabled = false; el<HTMLButtonElement>('pg-preview').disabled = false;
+  }
+});
+cancel.addEventListener('click', () => controller?.abort());
+download.addEventListener('click', () => {
+  if (!exportText) return;
+  const url = URL.createObjectURL(new Blob([exportText], { type: 'application/json' }));
+  const link = document.createElement('a'); link.href = url; link.download = 'jevcn-playground-result.json'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+window.addEventListener('pagehide', () => { controller?.abort(); key.value = ''; clearResult(); });
+window.addEventListener('pageshow', event => { if (event.persisted) { try { key.value = localStorage.getItem(STORAGE_KEY) ?? ''; remember.checked = Boolean(key.value); } catch { key.value = ''; } } });
+</script>
+<style>
+.pg { --pg-border: var(--sl-color-gray-5); }
+.pg-notice { border-left: 3px solid var(--sl-color-accent); background: var(--sl-color-bg-nav); padding: 1rem 1.25rem; font-size: .9rem; }
+.pg-notice p { margin-top: .5rem; }
+.pg fieldset { border: 1px solid var(--pg-border); border-radius: .5rem; padding: 1.25rem; margin: 1.5rem 0; min-width: 0; }
+.pg legend { padding: 0 .5rem; font-weight: 700; }
+.pg label { display: block; margin: 1rem 0 .4rem; font-weight: 600; }
+.pg input:not([type=checkbox]),.pg textarea,.pg select { box-sizing: border-box; width: 100%; border: 1px solid var(--pg-border); border-radius: .3rem; background: var(--sl-color-bg); color: var(--sl-color-text); padding: .7rem; font: inherit; }
+.pg textarea { resize: vertical; font-family: var(--sl-font-mono); font-size: .88rem; }
+.pg .pg-check { display: flex; align-items: center; gap: .6rem; }
+.pg-help,#pg-storage { font-size: .8rem; color: var(--sl-color-gray-2); }
+.pg button { border: 1px solid var(--pg-border); border-radius: .3rem; padding: .65rem .9rem; background: var(--sl-color-bg-nav); color: var(--sl-color-text); font: inherit; cursor: pointer; }
+.pg button:disabled { opacity: .5; cursor: not-allowed; }
+.pg-key-row,.pg-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.pg-key-row input { flex: 1; min-width: 150px; }
+.pg-key-row > *, .pg-actions > * { margin: 0 !important; }
+#pg-run { background: var(--cn-accent); color: var(--cn-on-accent); }
+#pg-example { margin-top: 1rem; }
+.pg-output { max-height: 32rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
+#pg-status { border-block: 1px solid var(--pg-border); padding-block: 1rem; }
+</style>

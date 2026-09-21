@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "playground": "node scripts/playground-server.mjs",
+    "test:playground": "node --test tests/playground.test.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.2",
@@ -16,5 +18,8 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@typesafe-ai/sdk": "0.6.0"
   }
 }
