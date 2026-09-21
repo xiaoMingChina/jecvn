@@ -14,7 +14,7 @@ test('invalid inputs, cross-site requests and rate limits never reach upstream',
 });
 test('one fixed upstream request, no forwarded cookies, redacted response, no cache', async()=>{
  let calls=0;const w=createWorker(async(url,options)=>{
-  calls++;assert.equal(url,API_URL);assert.equal(options.redirect,'error');assert.equal(options.headers.Authorization,'Bearer test-key');assert.equal(options.headers.Cookie,undefined);assert.deepEqual(JSON.parse(options.body),body);
+  calls++;assert.equal(url,API_URL);assert.equal(options.redirect,'manual');assert.equal(options.headers.Authorization,'Bearer test-key');assert.equal(options.headers.Cookie,undefined);assert.deepEqual(JSON.parse(options.body),body);
   return Response.json({answers:{result:{choice:'test-key'}}});
  });
  const r=await w.fetch(req({Cookie:'private-cookie'}),env);assert.equal(r.status,200);assert.equal(r.headers.get('Cache-Control'),'no-store');assert.ok(!(await r.text()).includes('test-key'));assert.equal(calls,1);

@@ -52,10 +52,15 @@ export function createWorker(fetcher = fetch, timeoutMs = 25000) {
     const timer = setTimeout(cancel, timeoutMs);
     try {
       const response = await fetcher(API_URL, {
-        method: 'POST', redirect: 'error', signal: controller.signal,
+        method: 'POST', redirect: 'manual', signal: controller.signal,
         headers: { Authorization: auth, 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(body),
       });
+      // workerd rejects redirect: 'error'; manual never follows a Location with credentials.
+      if (response.status >= 300 && response.status < 400) {
+        await response.body?.cancel();
+        return json(502, { error: 'upstream_redirect_rejected' });
+      }
       if (!response.ok) {
         await response.body?.cancel();
         return json([401, 403, 422, 429].includes(response.status) ? response.status : 502, { error: 'upstream_request_failed' });
