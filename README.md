@@ -41,13 +41,19 @@ npm run build    # 产出静态站点到 ./dist/
 npm run preview  # 本地预览构建结果
 ```
 
-## Cloudflare Pages 部署
+## Cloudflare Workers 部署
 
 - Root Directory：留空（项目位于仓库根目录）。
 - Build command：`npm run build`。
-- Build output directory：`dist`。
+- Deploy command：`npx wrangler deploy`。静态资源目录由 `wrangler.jsonc` 指向 `dist`。
 - Node.js：根目录的 `.nvmrc` 和 `.node-version` 均指定 `22`；如控制台配置了 `NODE_VERSION`，请同步设置为 `22`。
 - 依赖由已提交的 `package-lock.json` 锁定，本地使用 `npm ci` 安装。
+
+Playground 仅提供线上运行：`/api/systemone` 由 `worker/index.js` 处理，其他页面继续使用 Astro 静态资源。不需要配置 TypeSafe Key 环境变量；每位用户自带 Key，通过 Authorization 请求头转发至固定官方 API。接口不存储密钥或输入、不输出请求内容日志、响应不缓存；不要在 Cloudflare 添加记录认证头或请求体的日志处理器。
+
+限流绑定 `PLAYGROUND_RATE_LIMITER` 由 Wrangler 配置，按 IP 每分钟 10 次（边缘限流，不是严格的全局配额）。允许的站点为 `https://jevcn.com` 和 `https://www.jevcn.com`。不支持其他预览域名调用。
+
+验证：`npm run test:playground`、`npm run build`、`npx wrangler deploy --dry-run`。前两者和打包验证不调用收费 API；使用真实 Key 的端到端验证需在部署后手动运行一次。
 
 ## 目录结构
 

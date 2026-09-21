@@ -32,7 +32,7 @@ export async function requestDecision({ key, payload, signal, fetcher = fetch, e
   });
   if (!response.ok) {
     // Do not display arbitrary upstream error bodies, which might echo credentials.
-    const message = { 401: 'Key 无效或已失效。', 403: '权限不足或访问被拒绝。', 429: '已限流或额度受限，请稍后手动重试。', 422: '参数不符合模型要求，请检查标准或模型名称。' }[response.status] ?? '官方 API 返回错误，请稍后手动重试。';
+    const message = { 400: '请求格式不正确，请检查输入。', 413: '请求内容过大，请缩短输入。', 502: '暂时无法取得官方 API 的有效响应。', 503: '线上接口暂不可用，请稍后重试。', 504: '请求超时；官方可能仍已处理并计费。', 401: 'Key 无效或已失效。', 403: '权限不足或访问被拒绝。', 429: '已限流或额度受限，请稍后手动重试。', 422: '参数不符合模型要求，请检查标准或模型名称。' }[response.status] ?? '官方 API 返回错误，请稍后手动重试。';
     throw new Error(`HTTP ${response.status}：${message}`);
   }
   const data = await response.json();

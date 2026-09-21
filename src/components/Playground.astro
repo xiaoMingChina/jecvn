@@ -2,7 +2,7 @@
 import { examples } from '../lib/playground-examples.mjs';
 ---
 <section class="pg" aria-label="Jev Playground">
-  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>本地版通过你电脑上的官方 SDK 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p><a href="/lab/playground-guide/">本地启动与使用指南 ↗</a></p><p id="pg-connection">线上为请求编辑与预览模式。真实调用请查看使用指南启动本地版；官方目前不允许本站浏览器直连。</p></div>
+  <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>线上通过 JevCN 的 Cloudflare Worker 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p><a href="/lab/playground-guide/">使用指南 ↗</a></p><p id="pg-connection">线上模式：你的 Key 与输入会经 JevCN 的 Cloudflare Worker 转发给 TypeSafe 官方 API。接口不保存 Key、不记录请求内容。</p></div>
   <div class="pg-workspace"><form id="pg-form">
     <fieldset><legend>1 / 连接设置</legend>
       <label for="pg-key">你的 TypeSafe API Key</label>
@@ -59,7 +59,6 @@ const summary = el('pg-summary');
 const run = el<HTMLButtonElement>('pg-run');
 const cancel = el<HTMLButtonElement>('pg-cancel');
 const download = el<HTMLButtonElement>('pg-download');
-const local = location.origin === 'http://127.0.0.1:4322';
 let controller: AbortController | undefined;
 let exportText = '';
 function saveKey() {
@@ -74,15 +73,9 @@ function saveKey() {
   } catch { remember.checked = false; storage.textContent = '浏览器拒绝访问本地存储；请检查浏览器的网站数据设置。当前 Key 仍可在本页使用。'; }
 }
 try {
-  const saved = local ? localStorage.getItem(STORAGE_KEY) : null;
+  const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) { key.value = saved; remember.checked = true; storage.textContent = '已从此浏览器恢复 Key。'; }
 } catch { storage.textContent = '本地存储不可用，Key 仅在本页使用。'; }
-if (!local) {
-  key.disabled = true; remember.disabled = true; run.disabled = true;
-  run.textContent = '请在本地版运行';
-  status.textContent = '线上预览已就绪，可编辑示例并预览请求，无需 Key。';
-  storage.textContent = '线上预览无需填写 Key。启动本地版后可输入并选择记住。';
-} else { el('pg-connection').textContent = '本地运行模式：浏览器 → 本机服务 → TypeSafe 官方 SDK / API。Key 不经过 JevCN 远端服务器。'; }
 remember.addEventListener('change', saveKey);
 key.addEventListener('input', saveKey);
 function clearResult() { exportText = ''; download.disabled = true; output.textContent = '等待运行或预览请求。'; summary.textContent = '尚未调用模型，没有示意结果。'; }
@@ -119,7 +112,7 @@ el('pg-preview').addEventListener('click', () => {
   catch (error) { status.textContent = redact((error as Error).message, key.value.trim()); }
 });
 el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
-  event.preventDefault(); if (controller || !local) return;
+  event.preventDefault(); if (controller) return;
   let body; try { body = payload(); if (!key.value.trim()) throw new Error('请先填写自己的 API Key。'); } catch (error) { status.textContent = (error as Error).message; return; }
   const secret = key.value.trim();
   saveKey(); clearResult(); controller = new AbortController();
@@ -127,7 +120,7 @@ el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
   const timer = setTimeout(() => { timedOut = true; active.abort(); }, 30000);
   run.disabled = true; cancel.disabled = false; cards.forEach(card => { card.disabled = true; });
   el<HTMLFieldSetElement>('pg-editors').disabled = true; el<HTMLButtonElement>('pg-preview').disabled = true;
-  status.textContent = '正在通过本地 SDK 请求官方 API…'; const start = performance.now();
+  status.textContent = '正在通过 Cloudflare Worker 请求官方 API…'; const start = performance.now();
   try {
     const data = await requestDecision({ key: secret, payload: body, signal: active.signal, endpoint: '/api/systemone' });
     if (active.signal.aborted) return;
@@ -137,7 +130,7 @@ el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
     summary.textContent = redact(`实际模型：${String(data.model ?? '未返回')} · 端到端耗时：${elapsedMs} ms`, secret);
     download.disabled = false; status.textContent = '请求完成。结果来自真实 API 返回。';
   } catch (error) {
-    status.textContent = active.signal.aborted ? (timedOut ? '等待超过 30 秒，已停止等待；服务端可能仍已处理并计费。' : '已取消等待；服务端可能仍已处理并计费。') : error instanceof TypeError ? '无法连接本地服务，请确认本地 Playground 仍在运行。没有自动重试。' : redact((error as Error).message, secret);
+    status.textContent = active.signal.aborted ? (timedOut ? '等待超过 30 秒，已停止等待；服务端可能仍已处理并计费。' : '已取消等待；服务端可能仍已处理并计费。') : error instanceof TypeError ? '无法连接线上接口，请检查网络或稍后手动重试。' : redact((error as Error).message, secret);
   } finally {
     clearTimeout(timer); controller = undefined; run.disabled = false; cancel.disabled = true; cards.forEach(card => { card.disabled = false; });
     el<HTMLFieldSetElement>('pg-editors').disabled = false; el<HTMLButtonElement>('pg-preview').disabled = false;

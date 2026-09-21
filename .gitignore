@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # Unreviewed local evaluation output
 examples/chinese-routing/report.local.json
+
+# Worker local runtime
+.wrangler/
+.dev.vars*

@@ -40,7 +40,7 @@ TYPESAFE_API_KEY=tsk_your_key_here
 SDK 会**自动读取** `TYPESAFE_API_KEY`，因此 `new TypeSafeClient()` 可以不带任何参数。
 
 :::caution[API Key 是服务端凭证]
-SDK 默认**禁止在浏览器中运行**（`dangerouslyAllowBrowser` 默认为 `false`），这是有意为之的设计——把 Key 暴露给页面用户等于泄露凭证。面向公众的应用应在服务端保管开发者自己的 Key。本社区的 [Playground](/playground/) 使用用户自己的 Key，并在用户电脑上的本地服务调用官方 SDK；可选的浏览器保存会持久化个人 Key，请仅在可信设备上使用。
+SDK 默认**禁止在浏览器中运行**（`dangerouslyAllowBrowser` 默认为 `false`），这是有意为之的设计——把 Key 暴露给页面用户等于泄露凭证。面向公众的应用应在服务端保管开发者自己的 Key。本社区的 [Playground](/playground/) 使用用户自己的 Key，经 JevCN 的 Cloudflare Worker 转发给官方 API，接口不保存 Key 或记录请求内容；可选的浏览器保存会持久化个人 Key，请仅在可信设备上使用。
 :::
 
 ### 可选环境变量
