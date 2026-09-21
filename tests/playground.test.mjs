@@ -40,3 +40,14 @@ test('结果视图保留零概率，Choice 按概率排序，Score 按档位排�
   assert.deepEqual(score.rows,[['0 · 低',0.25],['1 · 高',0.75]]);
   assert.equal(resultView({type:'noul',noul:2}),null);
 });
+
+test('小说状态机映射分数、跨越阈值、限制边界且拒绝无效结果', async () => {
+ const {initialState,settleTurn,mockDecision,novelPayloads}=await import('../src/lib/novel-game.mjs');
+ const emotion={type:'choice',choice:'暗自窃喜'};
+ const settle=(favor,score)=>settleTurn({...initialState(),favor},emotion,{type:'score',score});
+ assert.equal(settle(45,3.2).state.stage,'熟悉');assert.equal(settle(75,3.2).state.stage,'告白节点');assert.equal(settle(51,0).state.stage,'初见');
+ assert.equal(settle(99,4).state.favor,100);assert.equal(settle(1,0).state.favor,0);
+ assert.equal(settle(35,3.2).delta,6);assert.throws(()=>settle(35,5));assert.throws(()=>settleTurn(initialState(),{type:'choice',choice:'unknown'},{type:'score',score:2}));
+ assert.throws(()=>settleTurn({...initialState(),stage:'终章'},emotion,{type:'score',score:2}));
+ assert.equal(mockDecision('五百')[0].choice,'彻底无语');assert.equal(novelPayloads(initialState(),'你好').length,2);
+});
