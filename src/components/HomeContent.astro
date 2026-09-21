@@ -1,19 +1,31 @@
+---
+import { updates } from '../data/community';
+import report from '../../examples/chinese-routing/baseline-report.json';
+---
+<nav class="cn-home-nav" aria-label="社区内容导航"><a href="#latest-title">最近更新</a><a href="/lab/chinese-routing/">实践手记</a><a href="/ecosystem/showcase/">项目精选</a><a href="/ecosystem/official/">官方动态</a><a href="/community/contributing/">参与共建 ↗</a></nav>
+<section class="cn-section cn-latest" aria-labelledby="latest-title">
+  <div class="cn-section-heading"><div><p class="cn-kicker">01 / 社区正在记录</p><h2 id="latest-title">每一步尝试，都留下依据。</h2></div><a class="cn-text-link" href="/updates/">全部观察与更新 ↗</a></div>
+  <div class="cn-editorial-grid">
+    <article class="cn-feature">
+      <div class="cn-feature-meta"><span>实践手记 / 001</span><span class="cn-status">规则基线已复现</span></div>
+      <h3><a href="/lab/chinese-routing/">一句中文提问，<br />该交给哪个处理流程？</a></h3>
+      <p>从 16 条原创样例开始。先公开规则的失败，再为模型比较准备同一把尺子。</p>
+      <div class="cn-feature-results"><div><strong>{report.total}</strong><span>公开样例</span></div><div><strong>{report.total - report.correct}</strong><span>规则误判</span></div><div><strong>待验证</strong><span>Jev 对照</span></div></div>
+      <a class="cn-button cn-primary" href="/lab/chinese-routing/">阅读完整实践 <span aria-hidden="true">↗</span></a>
+      <p class="cn-feature-note">本地离线运行 · 数据与脚本公开 · 非 Jev 性能成绩</p>
+    </article>
+    <div class="cn-update-list">
+      {updates.map(item => <article class="cn-update"><div class="cn-update-meta"><time datetime={item.date}>{item.date}</time><span>{item.category}</span></div><h3><a href={item.href}>{item.title}<span aria-hidden="true"> ↗</span></a></h3><p>{item.description}</p><span class="cn-update-status">{item.status}</span></article>)}
+    </div>
+  </div>
+</section>
 <section class="cn-section" aria-labelledby="learn-title">
-  <div class="cn-section-heading"><div><p class="cn-kicker">01 / 从理解，到动手</p><h2 id="learn-title">找到你的第一步。</h2></div><p>少一点术语障碍，<br />多一点可以落地的理解。</p></div>
+  <div class="cn-section-heading"><div><p class="cn-kicker">02 / 从理解，到动手</p><h2 id="learn-title">找到你的第一步。</h2></div><p>少一点术语障碍，<br />多一点可以落地的理解。</p></div>
   <div class="cn-paths">
     <a class="cn-path" href="/getting-started/introduction/"><span class="cn-path-number">01 <span>CONCEPT</span></span><h3>先认识 Jev</h3><p>System 1 是什么？概率决策适合解决哪些问题？从核心概念建立直觉。</p><span class="cn-path-link">阅读中文导览 <b>↗</b></span></a>
     <a class="cn-path cn-path-featured" href="/getting-started/quickstart/"><span class="cn-path-number">02 <span>QUICKSTART</span></span><h3>跑通第一个示例</h3><p>准备开发环境，接入 SDK，让应用完成第一次有明确输出类型的决策。</p><span class="cn-path-link">3 分钟上手 SDK <b>↗</b></span></a>
     <a class="cn-path" href="/ecosystem/showcase/"><span class="cn-path-number">03 <span>BUILD</span></span><h3>探索开源生态</h3><p>浏览公开的开源项目与工具，从源码与公开文档中寻找下一步灵感。</p><span class="cn-path-link">查看开源项目 <b>↗</b></span></a>
   </div>
-</section>
-<section class="cn-section cn-primitives" aria-labelledby="primitive-title">
-  <div class="cn-section-heading"><div><p class="cn-kicker">02 / 三种原子能力</p><h2 id="primitive-title">输出有类型，决策有边界。</h2></div><a class="cn-text-link" href="/primitives/types/">深入理解原子机制 ↗</a></div>
-  <div class="cn-primitive-grid">
-    <article><span class="cn-symbol" aria-hidden="true">↗</span><h3>Choice<span>做选择</span></h3><p>在预设选项中判断，让意图识别和任务路由有明确的去向。</p><code>“物流” | “售后” | “其他”</code></article>
-    <article><span class="cn-symbol" aria-hidden="true">◒</span><h3>Noul<span>判断概率</span></h3><p>用 0 到 1 之间的结果表达判断，为业务阈值和人工复核提供依据。</p><code>0.0 ─────────── 1.0</code></article>
-    <article><span class="cn-symbol" aria-hidden="true">▥</span><h3>Score<span>评估打分</span></h3><p>把评价标准转化为分数，为排序、筛选和优先级提供信号。</p><code>标准 → 评估 → 分数</code></article>
-  </div>
-  <p class="cn-boundary">强类型约束输出形式，业务规则管理决策风险。关键流程仍需评估、监控与必要的人工复核。</p>
 </section>
 <section class="cn-section" aria-labelledby="resources-title">
   <div class="cn-section-heading"><div><p class="cn-kicker">03 / 从全球生态，到中文实践</p><h2 id="resources-title">好资料，值得一起读。</h2></div><a class="cn-text-link" href="/ecosystem/official/">官方资料与动态 ↗</a></div>

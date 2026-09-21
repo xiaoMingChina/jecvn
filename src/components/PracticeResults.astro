@@ -1,0 +1,10 @@
+---
+import report from '../../examples/chinese-routing/baseline-report.json';
+---
+<p><strong>本地规则结果：{report.correct} / {report.total}，准确率 {(report.accuracy * 100).toFixed(2)}%。</strong> 请求失败或缺失：{report.errors}。这是关键词规则的教学样例结果，不是 Jev 成绩。</p>
+<div class="cn-results-table" tabindex="0" role="region" aria-label="规则基线的全部预测，可横向滚动">
+<table>
+  <thead><tr><th scope="col">ID</th><th scope="col">输入</th><th scope="col">预期</th><th scope="col">规则输出</th><th scope="col">结果</th></tr></thead>
+  <tbody>{report.rows.map(row => <tr><td>{row.id}</td><td>{row.text}</td><td>{row.expected}</td><td>{row.actual ?? row.error}</td><td>{row.correct ? '正确' : '误判'}</td></tr>)}</tbody>
+</table>
+</div>

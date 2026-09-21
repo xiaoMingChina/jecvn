@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "provenance": "JevCN 原创合成教学样例；非真实用户提问，非独立测试集。",
+  "labels": [
+    "环境接入",
+    "故障反馈",
+    "概念文档",
+    "需要澄清"
+  ],
+  "cases": [
+    {
+      "id": "01",
+      "group": "direct",
+      "text": "安装 Node 后怎么启动本地文档？",
+      "expected": "环境接入"
+    },
+    {
+      "id": "02",
+      "group": "direct",
+      "text": "API key 要放在哪里？",
+      "expected": "环境接入"
+    },
+    {
+      "id": "03",
+      "group": "direct",
+      "text": "构建报错了，日志提示找不到模块。",
+      "expected": "故障反馈"
+    },
+    {
+      "id": "04",
+      "group": "direct",
+      "text": "运行示例时出现错误，应该如何排查？",
+      "expected": "故障反馈"
+    },
+    {
+      "id": "05",
+      "group": "direct",
+      "text": "Choice 的概念是什么？",
+      "expected": "概念文档"
+    },
+    {
+      "id": "06",
+      "group": "direct",
+      "text": "哪里能看到 Noul 的文档？",
+      "expected": "概念文档"
+    },
+    {
+      "id": "07",
+      "group": "direct",
+      "text": "你好，想和大家交流一下。",
+      "expected": "需要澄清"
+    },
+    {
+      "id": "08",
+      "group": "direct",
+      "text": "可以帮我看看吗？",
+      "expected": "需要澄清"
+    },
+    {
+      "id": "09",
+      "group": "negation",
+      "text": "不是安装问题，是运行时一直报错。",
+      "expected": "故障反馈"
+    },
+    {
+      "id": "10",
+      "group": "negation",
+      "text": "没有报错，我只想了解 Choice 的概念。",
+      "expected": "概念文档"
+    },
+    {
+      "id": "11",
+      "group": "mixed",
+      "text": "Where should I set the API key，本地环境怎么配？",
+      "expected": "环境接入"
+    },
+    {
+      "id": "12",
+      "group": "mixed",
+      "text": "build failed，提示 module not found。",
+      "expected": "故障反馈"
+    },
+    {
+      "id": "13",
+      "group": "paraphrase",
+      "text": "第一次用这个 SDK，怎样把它接进项目？",
+      "expected": "环境接入"
+    },
+    {
+      "id": "14",
+      "group": "paraphrase",
+      "text": "程序直接退出了，终端什么也没留下。",
+      "expected": "故障反馈"
+    },
+    {
+      "id": "15",
+      "group": "ambiguous",
+      "text": "安装与运行报错都想问，先从哪一个说起？",
+      "expected": "需要澄清"
+    },
+    {
+      "id": "16",
+      "group": "mixed",
+      "text": "What does Choice mean，能解释一下吗？",
+      "expected": "概念文档"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+name: 提交复现记录
+description: 分享成功或失败的公开实验，避免提交密钥与私人业务资料。
+title: '[复现] '
+body:
+  - type: input
+    id: source
+    attributes:
+      label: 实验或项目链接
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与版本
+      description: 日期、代码提交、SDK、实际模型版本；未调用模型请说明。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 数据与复现步骤
+      description: 提供可以公开的数据来源、标签标准、命令或代码。
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 结果与失败案例
+      description: 区分实际运行、引用结果和推测；保留超时或缺失请求，注明样本量。
+    validations:
+      required: true
+  - type: checkboxes
+    id: public
+    attributes:
+      label: 公开范围
+      options:
+        - label: 我确认提交内容可以公开，不包含密钥、个人信息或未授权的业务资料。
+          required: true

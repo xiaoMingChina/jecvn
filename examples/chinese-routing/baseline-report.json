@@ -1,0 +1,181 @@
+{
+  "datasetVersion": "1.0.0",
+  "datasetSha256": "66457c4b9abb9164fd012f6ca68156acf33fb41edbc13a07bd2f001221794981",
+  "metadata": {
+    "engine": "keyword-baseline-v1",
+    "model": null,
+    "description": "本地关键词规则，未调用 Jev"
+  },
+  "total": 16,
+  "correct": 9,
+  "accuracy": 0.5625,
+  "errors": 0,
+  "byGroup": {
+    "direct": {
+      "total": 8,
+      "correct": 8
+    },
+    "negation": {
+      "total": 2,
+      "correct": 0
+    },
+    "mixed": {
+      "total": 3,
+      "correct": 1
+    },
+    "paraphrase": {
+      "total": 2,
+      "correct": 0
+    },
+    "ambiguous": {
+      "total": 1,
+      "correct": 0
+    }
+  },
+  "rows": [
+    {
+      "id": "01",
+      "group": "direct",
+      "text": "安装 Node 后怎么启动本地文档？",
+      "expected": "环境接入",
+      "actual": "环境接入",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "02",
+      "group": "direct",
+      "text": "API key 要放在哪里？",
+      "expected": "环境接入",
+      "actual": "环境接入",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "03",
+      "group": "direct",
+      "text": "构建报错了，日志提示找不到模块。",
+      "expected": "故障反馈",
+      "actual": "故障反馈",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "04",
+      "group": "direct",
+      "text": "运行示例时出现错误，应该如何排查？",
+      "expected": "故障反馈",
+      "actual": "故障反馈",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "05",
+      "group": "direct",
+      "text": "Choice 的概念是什么？",
+      "expected": "概念文档",
+      "actual": "概念文档",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "06",
+      "group": "direct",
+      "text": "哪里能看到 Noul 的文档？",
+      "expected": "概念文档",
+      "actual": "概念文档",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "07",
+      "group": "direct",
+      "text": "你好，想和大家交流一下。",
+      "expected": "需要澄清",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "08",
+      "group": "direct",
+      "text": "可以帮我看看吗？",
+      "expected": "需要澄清",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "09",
+      "group": "negation",
+      "text": "不是安装问题，是运行时一直报错。",
+      "expected": "故障反馈",
+      "actual": "环境接入",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "10",
+      "group": "negation",
+      "text": "没有报错，我只想了解 Choice 的概念。",
+      "expected": "概念文档",
+      "actual": "故障反馈",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "11",
+      "group": "mixed",
+      "text": "Where should I set the API key，本地环境怎么配？",
+      "expected": "环境接入",
+      "actual": "环境接入",
+      "error": null,
+      "correct": true
+    },
+    {
+      "id": "12",
+      "group": "mixed",
+      "text": "build failed，提示 module not found。",
+      "expected": "故障反馈",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "13",
+      "group": "paraphrase",
+      "text": "第一次用这个 SDK，怎样把它接进项目？",
+      "expected": "环境接入",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "14",
+      "group": "paraphrase",
+      "text": "程序直接退出了，终端什么也没留下。",
+      "expected": "故障反馈",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "15",
+      "group": "ambiguous",
+      "text": "安装与运行报错都想问，先从哪一个说起？",
+      "expected": "需要澄清",
+      "actual": "环境接入",
+      "error": null,
+      "correct": false
+    },
+    {
+      "id": "16",
+      "group": "mixed",
+      "text": "What does Choice mean，能解释一下吗？",
+      "expected": "概念文档",
+      "actual": "需要澄清",
+      "error": null,
+      "correct": false
+    }
+  ]
+}

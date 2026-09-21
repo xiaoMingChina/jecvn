@@ -1,0 +1,33 @@
+name: 推荐公开资源
+description: 推荐 Jev 项目、资料或报告失效链接。
+title: '[资源] '
+body:
+  - type: input
+    id: source
+    attributes:
+      label: 原始链接
+      description: 填写公开仓库或作者原文；报告断链时填写本站页面及失效地址。
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: 用途与推荐理由
+      description: 说明它与 Jev 的关系，以及适合哪些开发者。
+    validations:
+      required: true
+  - type: dropdown
+    id: verification
+    attributes:
+      label: 你验证到了哪一步？
+      options:
+        - 仅阅读公开资料
+        - 已安装或运行
+        - 已完成可复现评测
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 版本、核查日期与许可
+      description: 已知限制、维护状态和允许转载的范围也可以写在这里。
