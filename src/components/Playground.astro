@@ -1,3 +1,6 @@
+---
+import { examples } from '../lib/playground-examples.mjs';
+---
 <section class="pg" aria-label="Jev Playground">
   <div class="pg-notice"><strong>用户自带 Key · 单次真实请求</strong><p>本地版通过你电脑上的官方 SDK 调用 TypeSafe API。本站不提供共享额度，调用可能产生费用。本页不自动运行、不自动重试。</p><p><a href="/lab/playground-guide/">本地启动与使用指南 ↗</a></p><p id="pg-connection">线上为请求编辑与预览模式。真实调用请查看使用指南启动本地版；官方目前不允许本站浏览器直连。</p></div>
   <div class="pg-workspace"><form id="pg-form">
@@ -19,13 +22,29 @@
     </fieldset>
     <div class="pg-actions"><button id="pg-run" type="submit">运行 1 次请求</button><button id="pg-cancel" type="button" disabled>取消等待</button><button id="pg-preview" type="button">预览请求（不发送）</button></div>
   </form>
-  <div class="pg-results"><p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
+  <div class="pg-results">
+  <section class="pg-library" aria-labelledby="pg-library-title">
+    <h2 id="pg-library-title">从一个有趣的问题开始</h2>
+    <p class="pg-help">9 个中文原创场景。点击卡片替换编辑区，不会自动运行；也没有预填模型答案。</p>
+    <div class="pg-filters" role="group" aria-label="筛选示例类型">
+      <button type="button" data-example-filter="all" aria-pressed="true">全部</button>
+      <button type="button" data-example-filter="choice" aria-pressed="false">Choice</button>
+      <button type="button" data-example-filter="noul" aria-pressed="false">Noul</button>
+      <button type="button" data-example-filter="score" aria-pressed="false">Score</button>
+    </div>
+    <div class="pg-example-groups">
+      {['趣味判断', '开发实践'].map(group => <section data-example-group><h3>{group}</h3><div class="pg-example-grid">{examples.filter(item => item.group === group).map(item => <button type="button" class="pg-example-card" data-example-id={item.id} data-example-type={item.type} aria-pressed="false"><span class="pg-card-top"><span class="pg-card-icon" aria-hidden="true">{item.icon}</span><span class="pg-card-type">{item.type}</span></span><strong>{item.title}</strong><span>{item.description}</span></button>)}</div></section>)}
+    </div>
+    <aside class="pg-experiment-tip" aria-live="polite"><strong id="pg-example-title">当前示例：中文提问该交给谁？</strong><p id="pg-example-tip">试试否定、中英混写或多个诉求。</p></aside>
+  </section>
+  <p id="pg-status" role="status" aria-live="polite">准备就绪。请填写自己的 Key，再手动运行。</p>
   <section aria-labelledby="pg-output-title"><h2 id="pg-output-title">运行结果</h2><p id="pg-summary">尚未调用模型，没有示意结果。</p><pre class="pg-output" tabindex="0"><code id="pg-output">等待运行或预览请求。</code></pre><button id="pg-download" type="button" disabled>下载结果 JSON</button><p class="pg-help">下载文件不含认证头或 Key。输入与模型返回可能包含你提供的内容，分享前请检查。耗时为浏览器测量的端到端等待时间。</p></section>
   </div></div>
   <noscript>Playground 需要 JavaScript；文档与公开实践仍可正常阅读。</noscript>
 </section>
 <script>
-import { presets, makePayload, requestDecision, redact, STORAGE_KEY } from '../lib/playground.mjs';
+import { examples } from '../lib/playground-examples.mjs';
+import { makePayload, requestDecision, redact, STORAGE_KEY } from '../lib/playground.mjs';
 const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const key = el<HTMLInputElement>('pg-key');
 const remember = el<HTMLInputElement>('pg-remember');
@@ -69,13 +88,31 @@ key.addEventListener('input', saveKey);
 function clearResult() { exportText = ''; download.disabled = true; output.textContent = '等待运行或预览请求。'; summary.textContent = '尚未调用模型，没有示意结果。'; }
 el('pg-clear').addEventListener('click', () => { controller?.abort(); key.value = ''; remember.checked = false; saveKey(); clearResult(); status.textContent = 'Key 已从输入框清除；本地存储状态见上方提示。'; });
 function help() { el('pg-criteria-help').textContent = ({ choice: 'Choice 使用“选项名称 → 描述”的对象。', noul: 'Noul 使用 true / false 字段描述两种结果。', score: 'Score 使用从低到高排列的数组，档位从 0 开始。' })[type.value]!; }
-function example() {
-  const value = presets[type.value as keyof typeof presets];
-  state.value = value.state; instructions.value = value.instructions; criteria.value = JSON.stringify(value.criteria, null, 2); help(); clearResult();
+const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-example-id]'));
+function loadExample(id: string) {
+  if (controller) return;
+  const value = examples.find(item => item.id === id);
+  if (!value) return;
+  type.value = value.type; state.value = value.state; instructions.value = value.instructions;
+  criteria.value = JSON.stringify(value.criteria, null, 2); help(); clearResult();
+  cards.forEach(card => card.setAttribute('aria-pressed', String(card.dataset.exampleId === id)));
+  el('pg-example-title').textContent = `当前示例：${value.title}`;
+  el('pg-example-tip').textContent = value.tip;
+  status.textContent = `已载入“${value.title}”，未发送请求。可以修改输入或预览请求。`;
 }
-example();
+loadExample('routing');
 type.addEventListener('change', help);
-el('pg-example').addEventListener('click', example);
+el('pg-example').addEventListener('click', () => loadExample(({ choice: 'routing', noul: 'evidence', score: 'tutorial' })[type.value]!));
+cards.forEach(card => card.addEventListener('click', () => loadExample(card.dataset.exampleId!)));
+document.querySelectorAll<HTMLButtonElement>('[data-example-filter]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('[data-example-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  cards.forEach(card => { card.hidden = button.dataset.exampleFilter !== 'all' && card.dataset.exampleType !== button.dataset.exampleFilter; });
+  document.querySelectorAll<HTMLElement>('[data-example-group]').forEach(group => { group.hidden = Array.from(group.querySelectorAll<HTMLButtonElement>('[data-example-id]')).every(card => card.hidden); });
+}));
+[state, instructions, criteria, type].forEach(input => input.addEventListener('input', () => {
+  cards.forEach(card => card.setAttribute('aria-pressed', 'false'));
+  el('pg-example-title').textContent = '已修改 · 自定义试验';
+}));
 function payload() { return makePayload({ type: type.value, model: el<HTMLInputElement>('pg-model').value, state: state.value, instructions: instructions.value, criteria: criteria.value }); }
 el('pg-preview').addEventListener('click', () => {
   try { const body = payload(); clearResult(); output.textContent = redact(JSON.stringify(body, null, 2), key.value.trim()); status.textContent = '仅预览请求体，没有发送网络请求。'; }
@@ -88,7 +125,7 @@ el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
   saveKey(); clearResult(); controller = new AbortController();
   const active = controller; let timedOut = false;
   const timer = setTimeout(() => { timedOut = true; active.abort(); }, 30000);
-  run.disabled = true; cancel.disabled = false;
+  run.disabled = true; cancel.disabled = false; cards.forEach(card => { card.disabled = true; });
   el<HTMLFieldSetElement>('pg-editors').disabled = true; el<HTMLButtonElement>('pg-preview').disabled = true;
   status.textContent = '正在通过本地 SDK 请求官方 API…'; const start = performance.now();
   try {
@@ -102,7 +139,7 @@ el<HTMLFormElement>('pg-form').addEventListener('submit', async event => {
   } catch (error) {
     status.textContent = active.signal.aborted ? (timedOut ? '等待超过 30 秒，已停止等待；服务端可能仍已处理并计费。' : '已取消等待；服务端可能仍已处理并计费。') : error instanceof TypeError ? '无法连接本地服务，请确认本地 Playground 仍在运行。没有自动重试。' : redact((error as Error).message, secret);
   } finally {
-    clearTimeout(timer); controller = undefined; run.disabled = false; cancel.disabled = true;
+    clearTimeout(timer); controller = undefined; run.disabled = false; cancel.disabled = true; cards.forEach(card => { card.disabled = false; });
     el<HTMLFieldSetElement>('pg-editors').disabled = false; el<HTMLButtonElement>('pg-preview').disabled = false;
   }
 });
@@ -138,8 +175,29 @@ window.addEventListener('pageshow', event => { if (event.persisted) { try { key.
 
 .pg-workspace { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 2rem; align-items: start; }
 .pg-workspace > * { min-width: 0; }
-.pg-results { position: sticky; top: calc(var(--sl-nav-height) + 1rem); border: 1px solid var(--pg-border); border-radius: .5rem; padding: 1.25rem; margin-top: 1.5rem; background: var(--sl-color-bg-nav); }
+.pg-results { position: static; border: 1px solid var(--pg-border); border-radius: .5rem; padding: 1.25rem; margin-top: 1.5rem; background: var(--sl-color-bg-nav); }
 .pg-results h2 { font-size: 1.4rem; }
 .pg-results .pg-output { min-height: 16rem; background: var(--sl-color-bg); }
 @media(max-width: 50rem) { .pg-workspace { grid-template-columns: 1fr; gap: 0; } .pg-results { position: static; } }
+
+.pg-library > h2 { margin-top: 0; }
+.pg-filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.pg-filters button { padding: .35rem .65rem; font-size: .8rem; margin: 0; }
+.pg-filters button[aria-pressed=true] { background: var(--cn-accent); color: var(--cn-on-accent); }
+.pg-example-groups { max-height: 36rem; overflow-y: auto; padding: .3rem; }
+.pg-example-groups h3 { font-size: .95rem; margin: .8rem 0; }
+.pg-example-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .65rem; }
+.pg .pg-example-card { display: flex; flex-direction: column; text-align: left; gap: .45rem; padding: .85rem; margin: 0; background: var(--sl-color-bg); }
+.pg .pg-example-card[hidden], .pg [data-example-group][hidden] { display: none; }
+.pg-example-card:hover, .pg-example-card[aria-pressed=true] { border-color: var(--cn-accent); }
+.pg-example-card[aria-pressed=true] { box-shadow: inset 0 0 0 1px var(--cn-accent); }
+.pg-card-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.pg-card-icon { font-size: 1.9rem; line-height: 1.3; }
+.pg-card-type { font-size: .7rem; color: var(--cn-accent); text-transform: uppercase; font-family: var(--sl-font-mono); }
+.pg-example-card strong { font-size: .9rem; }
+.pg-example-card > span:last-child { color: var(--sl-color-gray-2); font-size: .75rem; line-height: 1.7; }
+.pg-experiment-tip { border-left: 2px solid var(--cn-accent); padding: .6rem .8rem; margin-top: 1rem; font-size: .85rem; }
+.pg-experiment-tip p { margin-top: .4rem; color: var(--sl-color-gray-2); }
+@media(max-width:50rem) { .pg-example-groups { max-height: none; } }
+@media(max-width:24rem) { .pg-example-grid { grid-template-columns: 1fr; } }
 </style>

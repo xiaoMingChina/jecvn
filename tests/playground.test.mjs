@@ -1,3 +1,4 @@
+import { examples } from '../src/lib/playground-examples.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer, request } from 'node:http';
@@ -39,4 +40,14 @@ test('本地服务仅接受同源请求，参数验证后调用一次且保留�
     assert.equal(calls,0);
     const success=await send({});assert.equal(success.status,200);assert.ok(success.body.includes('故障反馈'));assert.equal(calls,1);
   } finally { server.close();await once(server,'close'); }
+});
+
+test('示例库 ID 唯一，所有场景满足 API 输入约束并覆盖三种类型', () => {
+  assert.equal(new Set(examples.map(item => item.id)).size, examples.length);
+  assert.deepEqual(new Set(examples.map(item => item.type)), new Set(['choice', 'noul', 'score']));
+  for (const item of examples) {
+    const body = makePayload({ ...item, model: 'jev-latest', criteria: JSON.stringify(item.criteria) });
+    assert.equal(body.questions.result.type, item.type, item.id);
+    assert.ok(item.tip && item.title && item.description, item.id);
+  }
 });
