@@ -1,40 +1,37 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Jev 中文开发者门户
+description: 告别用 LLM 拼 JSON 的低效时代——面向软件决策的 System 1 强类型毫秒级模型。
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: 70ms 极速响应 · 输出 Token 免费 · 强类型零幻觉 · 软件原生 if-else 决策引擎
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: 快速开始上手
+      link: /getting-started/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+      variant: primary
+    - text: 查看全球生态 (Awesome Jev)
+      link: /ecosystem/showcase/
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## 核心特性
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card icon="rocket" title="毫秒级决策 (70ms - 500ms)">
+		基于非自回归并行采样与 RLCD 架构，比传统通用大模型快 20~200 倍，无缝嵌入代码主循环。
 	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
+	<Card icon="approve-check" title="强类型与零幻觉">
+		输出仅限 `Choice`、`Noul`（概率）、`Score`（打分），消除了 JSON 语法破损与自由生成的胡说八道。
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card icon="bars" title="颠覆性的经济模型">
+		输入成本低至 $0.042 / 百万 Token，输出 Token 完全免费（$0），高频决策无需担心账单暴增。
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card icon="puzzle" title="软件原生状态机">
+		代码负责执行与确定性流转，Jev 负责提供快速直觉。完美的 Agent 前置守门员（Guardrail）。
 	</Card>
 </CardGrid>
