@@ -5,6 +5,20 @@ import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
 <a class="playground-link" href="/labs/">Labs</a>
 <a class="playground-link" href="/patterns/">Patterns</a>
 <SocialIcons />
+<script>
+function openExternalLinksInNewTab(event: Event) {
+  if (!(event.target instanceof Element)) return;
+  const anchor = event.target.closest<HTMLAnchorElement>('a[href]');
+  if (!anchor) return;
+  const url = new URL(anchor.href, window.location.href);
+  if (url.origin === window.location.origin || !['http:', 'https:'].includes(url.protocol)) return;
+  anchor.target = '_blank';
+  anchor.rel = 'noopener noreferrer';
+}
+
+document.addEventListener('click', openExternalLinksInNewTab, true);
+document.addEventListener('auxclick', openExternalLinksInNewTab, true);
+</script>
 <style>
 .playground-link { color: var(--sl-color-text-accent); font-size: .875rem; font-weight: 650; white-space: nowrap; text-decoration: none; }
 .playground-link:hover { text-decoration: underline; }
