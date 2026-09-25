@@ -99,6 +99,7 @@ export default defineConfig({
 						{ label: 'Playground 使用指南', link: '/lab/playground-guide/' },
 						{ label: 'Jev 中文观察', link: '/updates/' },
 						{ label: '001 · 项目、评测与版本', link: '/updates/001/' },
+						{ label: '002 · JevCN 2.0fix', link: '/updates/002/' },
 						{ label: '实践 001 · 中文提问分流', link: '/lab/chinese-routing/' },
 					],
 				},

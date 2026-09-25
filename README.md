@@ -1,5 +1,7 @@
 # jevcn
 
+当前站点版本：**2.0.0-fix**（发布标识：JevCN 2.0fix）。
+
 Jev 中文社区 · 面向软件工程决策的 System 1 强类型毫秒级模型中文指南
 
 > 站点域名：[jevcn.com](https://jevcn.com)
