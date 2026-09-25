@@ -1,9 +1,10 @@
 ---
 import { updates } from '../data/community';
+import RegistryCards from './RegistryCards.astro';
 import report from '../../examples/chinese-routing/baseline-report.json';
 ---
-<nav class="cn-home-nav" aria-label="社区内容导航"><a href="#latest-title">最近更新</a><a href="/playground/">Playground 试验场</a><a href="/lab/chinese-routing/">实践手记</a><a href="/ecosystem/showcase/">项目精选</a><a href="/ecosystem/official/">官方动态</a><a href="/community/contributing/">参与共建 ↗</a></nav>
-<section class="cn-playground-entry" aria-labelledby="playground-entry-title"><div><p class="cn-kicker">动手试一试 / PLAYGROUND</p><h2 id="playground-entry-title">给决策一个独立的工作台。</h2><p>选择问题类型，调整中文输入，并排查看请求与结果。在线使用自己的 Key 运行，也可免费预览请求。</p></div><a class="cn-button cn-primary" href="/playground/">进入 Playground ↗</a></section>
+<nav class="cn-home-nav" aria-label="社区内容导航"><a href="/getting-started/introduction/">认识 Jev</a><a href="/playground/">Playground</a><a href="/labs/">开放实验室</a><a href="/patterns/">Patterns</a><a href="#latest-title">中文内容</a><a href="/ecosystem/showcase/">全球项目</a><a href="/community/contributing/">参与共建 ↗</a></nav>
+<section class="cn-playground-entry" aria-labelledby="playground-entry-title"><div><p class="cn-kicker">原子能力 / PLAYGROUND</p><h2 id="playground-entry-title">从 State 到 Typed Decision。</h2><p>快速体验 Choice、Noul、Score，以及概率、延迟和原始结果。在线使用自己的 Key，或只预览请求。</p></div><a class="cn-button cn-primary" href="/playground/">进入 Playground ↗</a></section>
 <section class="cn-section cn-latest" aria-labelledby="latest-title">
   <div class="cn-section-heading"><div><p class="cn-kicker">01 / 社区正在记录</p><h2 id="latest-title">每一步尝试，都留下依据。</h2></div><a class="cn-text-link" href="/updates/">全部观察与更新 ↗</a></div>
   <div class="cn-editorial-grid">
@@ -28,8 +29,21 @@ import report from '../../examples/chinese-routing/baseline-report.json';
     <a class="cn-path" href="/ecosystem/showcase/"><span class="cn-path-number">03 <span>BUILD</span></span><h3>探索开源生态</h3><p>浏览公开的开源项目与工具，从源码与公开文档中寻找下一步灵感。</p><span class="cn-path-link">查看开源项目 <b>↗</b></span></a>
   </div>
 </section>
+<section class="cn-section cn-featured-labs" aria-labelledby="labs-title">
+  <div class="cn-section-heading"><div><p class="cn-kicker">03 / 开放实验室 · LABS</p><h2 id="labs-title">决策进入软件之后，会发生什么？</h2></div><a class="cn-text-link" href="/labs/">查看全部实验 ↗</a></div>
+  <p>从可运行的玩法到中文任务对照。公开记录假设、方法、失败与限制，不预设 Jev 一定更好。</p>
+  <RegistryCards kind="labs" featured={true} />
+</section>
+<section class="cn-section" aria-labelledby="decision-title">
+ <div class="cn-section-heading"><div><p class="cn-kicker">04 / 一次被记录的决策</p><h2 id="decision-title">模型不写动作，它在合法选项中做选择。</h2></div><a class="cn-text-link" href="/playground/">自己运行一次 ↗</a></div>
+ <div class="cn-recorded-decision"><div><span>RECORDED DEMO / 非实时 API</span><p>State：方块 T，当前状态有 4 个合法动作。</p><strong>Jev → Choice</strong></div><div class="cn-recorded-bars"><p>rotate <span><i style="width:71%"></i></span><b>0.71</b></p><p>move_right <span><i style="width:18%"></i></span><b>0.18</b></p><p>move_left <span><i style="width:7%"></i></span><b>0.07</b></p><p>drop <span><i style="width:4%"></i></span><b>0.04</b></p></div><small>教学示意分布 · 延迟未测量 · 不是 Jev 实际调用结果</small></div>
+</section>
+<section class="cn-section" aria-labelledby="patterns-title">
+ <div class="cn-section-heading"><div><p class="cn-kicker">05 / 可检验的设计模式</p><h2 id="patterns-title">从实验里提炼 Pattern。</h2></div><a class="cn-text-link" href="/patterns/">浏览设计模式 ↗</a></div>
+ <p>每条 Pattern 都写清问题、决策原语、适用场景和不适用场景，并标记当前验证状态。</p><RegistryCards kind="patterns" />
+</section>
 <section class="cn-section" aria-labelledby="resources-title">
-  <div class="cn-section-heading"><div><p class="cn-kicker">03 / 从全球生态，到中文实践</p><h2 id="resources-title">好资料，值得一起读。</h2></div><a class="cn-text-link" href="/ecosystem/official/">官方资料与动态 ↗</a></div>
+  <div class="cn-section-heading"><div><p class="cn-kicker">06 / 从全球生态，到中文实践</p><h2 id="resources-title">好资料，值得一起读。</h2></div><a class="cn-text-link" href="/ecosystem/official/">官方资料与动态 ↗</a></div>
   <div class="cn-paths">
     <a class="cn-path" href="/ecosystem/rankings/"><span class="cn-path-number">01 <span>DISCOVER</span></span><h3>发现项目与榜单</h3><p>汇集全球公开目录与热度榜，按用途寻找工具，也看懂排名的依据。</p><span class="cn-path-link">浏览生态导航 <b>↗</b></span></a>
     <a class="cn-path" href="/ecosystem/benchmarks/"><span class="cn-path-number">02 <span>EVALUATE</span></span><h3>读懂公开评测</h3><p>从工具选择到中文检索，追溯数据、方法与失败案例，让结论有据可查。</p><span class="cn-path-link">查看评测资料 <b>↗</b></span></a>
@@ -39,7 +53,11 @@ import report from '../../examples/chinese-routing/baseline-report.json';
 </section>
 <section class="cn-community" aria-labelledby="community-title">
   <div class="cn-community-mark" aria-hidden="true">共<br />建<span>CN</span></div>
-  <div><p class="cn-kicker">04 / 中文交流，开源同行</p><h2 id="community-title">一个人的尝试，<br />一群人的经验。</h2><p>一起打磨中文文档，分享接入中的小坑，<br />把可复现的实践留给下一位开发者。</p><div class="cn-actions"><a class="cn-button cn-primary" href="/community/join/">加入微信交流群 ↗</a><a class="cn-text-link" href="/community/contributing/">参与文档共建 ↗</a></div><p class="cn-community-note">微信交流群已开放 · 社区页查看二维码与有效期</p></div>
-  <div class="cn-community-links"><a href="/ecosystem/showcase/"><span>发现</span>开源项目与案例 <b>↗</b></a><a href="https://github.com/xiaoMingChina/jevcn/issues"><span>交流</span>提问与反馈 <b>↗</b></a><a href="https://github.com/xiaoMingChina/jevcn"><span>共建</span>JevCN 开源仓库 <b>↗</b></a></div>
+  <div><p class="cn-kicker">08 / 中文交流，开源同行</p><h2 id="community-title">Build with us.</h2><p>JevCN 仍是中文开发者社区。一起打磨中文资料，提交实验、项目和失败记录，把可复现的经验留给下一位开发者。</p><div class="cn-actions"><a class="cn-button cn-primary" href="https://github.com/xiaoMingChina/jevcn/issues/new?title=Submit%20a%20Lab">提交 Lab ↗</a><a class="cn-button cn-secondary" href="https://github.com/xiaoMingChina/jevcn/issues/new?title=Submit%20a%20Project">提交项目 ↗</a><a class="cn-text-link" href="/community/contributing/">贡献中文内容 ↗</a></div><p class="cn-community-note"><a href="/community/join/">加入 Jev 中文交流群 ↗</a></p></div>
+  <div class="cn-community-links"><a href="https://github.com/xiaoMingChina/jevcn/issues/new?title=Report%20an%20Experiment"><span>记录</span>报告实验结果 <b>↗</b></a><a href="https://github.com/xiaoMingChina/jevcn/issues"><span>反馈</span>提问与问题反馈 <b>↗</b></a><a href="https://github.com/xiaoMingChina/jevcn"><span>共建</span>JevCN 开源仓库 <b>↗</b></a></div>
 </section>
 <footer class="cn-footer"><strong>Jev<span>CN</span><small>中文开发者社区</small></strong><p>由中文开发者独立维护，非 TypeSafe AI 官方站点。</p><a href="https://typesafe.ai/">TypeSafe AI 官方网站 ↗</a></footer>
+<style>
+.cn-recorded-decision{display:grid;grid-template-columns:1fr 1.2fr;gap:1.5rem;padding:1.5rem;border:1px solid var(--sl-color-gray-5);border-radius:.7rem;background:var(--sl-color-bg-nav)}.cn-recorded-decision>div:first-child>span{font: .75rem var(--sl-font-mono);color:var(--cn-accent)}.cn-recorded-decision>small{grid-column:1/-1;color:var(--sl-color-gray-2)}.cn-recorded-bars p{display:grid;grid-template-columns:6.5rem 1fr 3rem;align-items:center;gap:.7rem;font: .85rem var(--sl-font-mono)}.cn-recorded-bars p>span{height:.55rem;border-radius:1rem;background:var(--sl-color-gray-5);overflow:hidden}.cn-recorded-bars i{height:100%;display:block;background:var(--cn-accent)}.cn-recorded-bars b{text-align:right}.cn-featured-labs{padding-top:1rem;border-top:1px solid var(--sl-color-gray-5)}
+@media(max-width:42rem){.cn-recorded-decision{grid-template-columns:1fr}.cn-recorded-decision>small{grid-column:auto}.cn-recorded-bars p{grid-template-columns:5.8rem 1fr 2.5rem}}
+</style>

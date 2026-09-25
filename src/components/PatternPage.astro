@@ -1,0 +1,17 @@
+---
+import { patterns, patternStatusLabel } from '../data/patterns.mjs';
+import { labs } from '../data/labs.mjs';
+const { id } = Astro.props;
+const pattern = patterns.find(item => item.id === id);
+if (!pattern) throw new Error(`Unknown Pattern: ${id}`);
+const related = labs.filter(lab => pattern.relatedLabs.includes(lab.id));
+---
+<article class="pattern-page"><p class="eyebrow">PATTERN / {pattern.primitive.toUpperCase()} / {patternStatusLabel[pattern.status]}</p><h1>{pattern.title}</h1><p class="lede">{pattern.summary}</p>
+ <section><h2>问题</h2><p>{pattern.problem}</p></section><section><h2>决策架构</h2><p class="architecture">{pattern.architecture}</p></section>
+ <div class="use-grid"><section><h2>适合</h2><p>{pattern.whenToUse}</p></section><section><h2>不适合</h2><p>{pattern.whenNotToUse}</p></section></div>
+ <section><h2>关联 Labs</h2>{related.length ? <ul>{related.map(lab => <li><a href={lab.href}>{lab.title}</a></li>)}</ul> : <p>暂未关联实验；该 Pattern 仍是待验证的假设。</p>}</section>
+ <p class="caveat">状态为“{patternStatusLabel[pattern.status]}”。这是可供检验的设计模式描述，不构成经过验证的最佳实践。</p><nav><a href="/patterns/">全部 Patterns</a> · <a href="/labs/">探索 Labs</a></nav>
+</article>
+<style>
+.pattern-page{max-width:54rem}.eyebrow{color:var(--cn-accent);font: .8rem var(--sl-font-mono)}.lede{font-size:1.15rem;color:var(--sl-color-gray-2)}.pattern-page section{margin:2rem 0}.architecture,.caveat{padding:1rem 1.25rem;background:var(--sl-color-bg-nav);border-left:3px solid var(--cn-accent)}.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:40rem){.use-grid{grid-template-columns:1fr}}
+</style>

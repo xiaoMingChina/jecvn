@@ -1,0 +1,17 @@
+---
+import { labs, labCategories } from '../data/labs.mjs';
+import { patterns, patternStatusLabel } from '../data/patterns.mjs';
+const { kind = 'labs', featured = false } = Astro.props;
+const items = kind === 'labs' ? labs.filter(item => !featured || item.featured) : patterns;
+---
+<div class="registry-grid">
+ {items.map(item => <article class="registry-card">
+  <div class="registry-meta"><span>{kind === 'labs' ? labCategories[item.category] : item.primitive.toUpperCase()}</span><span>{kind === 'labs' ? item.status : patternStatusLabel[item.status]}</span></div>
+  <h3><a href={item.href ?? `/patterns/${item.slug}/`}>{item.title}</a></h3><p>{kind === 'labs' ? item.description : item.summary}</p>
+  {kind === 'labs' && <p class="registry-tags">{item.capabilities.join(' · ')}</p>}
+  <a class="registry-link" href={item.href ?? `/patterns/${item.slug}/`}>{kind === 'labs' ? '查看实验' : '阅读 Pattern'} ↗</a>
+ </article>)}
+</div>
+<style>
+.registry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1rem;margin:1.25rem 0 2rem}.registry-card{border:1px solid var(--sl-color-gray-5);border-radius:.65rem;padding:1.2rem;background:var(--sl-color-bg-nav)}.registry-meta{display:flex;justify-content:space-between;gap:.5rem;color:var(--sl-color-gray-2);font:.72rem var(--sl-font-mono)}.registry-card h3{font-size:1.1rem;margin:.8rem 0}.registry-card p{font-size:.9rem;line-height:1.7}.registry-tags{color:var(--sl-color-gray-2);font-size:.75rem!important}.registry-link{display:inline-block;margin-top:.4rem;font-weight:650}
+</style>

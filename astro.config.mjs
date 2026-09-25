@@ -6,6 +6,16 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	output: 'static',
 	site: 'https://jevcn.com',
+	redirects: {
+		'/learn': '/getting-started/introduction/',
+		'/learn/what-is-jev': '/getting-started/introduction/',
+		'/learn/system-one': '/primitives/comparison/',
+		'/learn/choice': '/primitives/types/#choice',
+		'/learn/noul': '/primitives/types/#noul',
+		'/learn/score': '/primitives/types/#score',
+		'/learn/quickstart': '/getting-started/quickstart/',
+		'/labs/chinese-routing': '/lab/chinese-routing/',
+	},
 	vite: {
 		build: {
 			rolldownOptions: {
@@ -54,6 +64,21 @@ export default defineConfig({
 			],
 			sidebar: [
 				{ label: '↗ Playground 试验场', link: '/playground/' },
+				{ label: '认识 Jev / Learn', link: '/getting-started/introduction/' },
+				{ label: '开放实验室 Labs', items: [
+					{ label: '全部实验', link: '/labs/' },
+					{ label: '俄罗斯方块', link: '/labs/tetris/' },
+					{ label: '互动小说', link: '/labs/interactive-fiction/' },
+					{ label: '中文分流实践', link: '/lab/chinese-routing/' },
+				] },
+				{ label: '设计模式 Patterns', items: [
+					{ label: '全部 Patterns', link: '/patterns/' },
+					{ label: 'Router', link: '/patterns/router/' },
+					{ label: 'Guard', link: '/patterns/guard/' },
+					{ label: 'Scorer', link: '/patterns/scorer/' },
+					{ label: 'Judge', link: '/patterns/judge/' },
+					{ label: 'Fast Loop', link: '/patterns/fast-loop/' },
+				] },
 				{
 					label: '快速开始',
 					items: [

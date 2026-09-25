@@ -1,0 +1,26 @@
+---
+import { labs, labCategories } from '../data/labs.mjs';
+import { patterns } from '../data/patterns.mjs';
+import { patternStatusLabel } from '../data/patterns.mjs';
+const { id } = Astro.props;
+const lab = labs.find(item => item.id === id);
+if (!lab) throw new Error(`Unknown Lab: ${id}`);
+const related = patterns.filter(pattern => lab.patterns.includes(pattern.id));
+const label = { prototype: '原型', experiment: '实验中', verified: '已验证' }[lab.status];
+---
+<article class="lab-page">
+ <p class="eyebrow">LAB / {labCategories[lab.category]} / {label}</p>
+ <h1>{lab.title}</h1><p class="lede">{lab.description}</p>
+ <section class="lab-question"><strong>实验问题</strong><p>{id === 'tetris' ? 'System 1 如何参与一个高频、小决策的软件循环？' : id === 'interactive-fiction' ? '如果 AI 不负责写故事，只负责做决定，会发生什么？' : 'Rule、Jev 与其他模型如何处理中文意图判断？'}</p></section>
+ {id === 'interactive-fiction' && <div class="experiment-link"><a href="/playground/novel/">开始互动小说 ↗</a><p>免费规则演示无需 API Key；真实 Jev 模式每回合请求 Choice 与 Score。</p></div>}
+ {id === 'tetris' && <div class="experiment-link"><a href={lab.demoUrl}>打开作者提供的在线演示 ↗</a><a href={lab.sourceUrl}>查看源码 ↗</a><p>这是社区公开项目链接，不由 JevCN 托管。可先阅读项目说明再运行。</p></div>}
+ {id === 'chinese-routing' && <div class="experiment-link"><a href={lab.href}>阅读完整实验、数据与失败案例 ↗</a></div>}
+ <section><h2>如何工作</h2><ol>{(id === 'tetris' ? ['游戏引擎产生状态快照并枚举合法落点。','Jev 通过 Choice 选择一个候选动作。','动作执行器校验并执行；引擎继续推进游戏。'] : id === 'interactive-fiction' ? ['故事引擎保存人物、关系阶段和固定剧本。','Jev 的 Choice 判断情绪，Score 评价本轮好感变化。','状态机更新数值，并从预写台词库中选择回应。'] : ['固定样例集与规则基线提供可复现输入。','为模型运行同一任务并记录输出。','对照失败样例、延迟和成本，不预设优劣。']).map(step => <li>{step}</li>)}</ol></section>
+ <section><h2>Patterns</h2><ul>{related.map(pattern => <li><a href={`/patterns/${pattern.slug}/`}>{pattern.title}</a> · {patternStatusLabel[pattern.status]}</li>)}</ul></section>
+ <section><h2>Evidence</h2><dl class="evidence"><dt>假设</dt><dd>{lab.evidence.hypothesis}</dd><dt>设置</dt><dd>{lab.evidence.setup}</dd><dt>数据 / 场景</dt><dd>{lab.evidence.dataset}</dd><dt>结果</dt><dd>{lab.evidence.result}</dd><dt>失败案例</dt><dd>{lab.evidence.failureCases}</dd><dt>延迟</dt><dd>{lab.evidence.latency}</dd><dt>成本</dt><dd>{lab.evidence.cost}</dd><dt>局限</dt><dd>{lab.evidence.limitations}</dd><dt>结论</dt><dd>{lab.evidence.conclusion}</dd></dl></section>
+ <section><h2>来源</h2><p>{lab.sourceUrl ? <a href={lab.sourceUrl}>{lab.sourceUrl}</a> : <a href="https://github.com/xiaoMingChina/jevcn">JevCN 实验源码 ↗</a>}</p></section>
+ <nav class="lab-related" aria-label="相关入口"><a href="/labs/">全部 Labs</a><a href="/patterns/">Patterns</a><a href="/ecosystem/showcase/">全球生态项目 ↗</a></nav>
+</article>
+<style>
+.lab-page{max-width:58rem}.eyebrow{color:var(--cn-accent);font:.8rem var(--sl-font-mono)}.lede{font-size:1.15rem;color:var(--sl-color-gray-2)}.lab-question,.experiment-link{padding:1rem 1.25rem;margin:1.5rem 0;background:var(--sl-color-bg-nav);border-left:3px solid var(--cn-accent)}.lab-page section{margin:2rem 0}.lab-related{display:flex;gap:1.5rem;border-top:1px solid var(--sl-color-gray-5);padding-top:1rem}.experiment-link a{margin-right:1rem;font-weight:650}.evidence{display:grid;grid-template-columns:minmax(7rem,.3fr) 1fr;gap:.8rem 1rem}.evidence dt{font-weight:650}.evidence dd{margin:0;color:var(--sl-color-gray-2)}@media(max-width:40rem){.lab-related{flex-wrap:wrap}.evidence{grid-template-columns:1fr;gap:.25rem}.evidence dd{margin-bottom:.7rem}}
+</style>

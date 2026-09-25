@@ -61,17 +61,30 @@ Playground 仅提供线上运行：`/api/systemone` 由 `worker/index.js` 处理
 .
 ├── astro.config.mjs          # 站点配置：site / 中文 locale / 侧边栏
 ├── src/
+│   ├── data/                 # Labs / Patterns 注册表与社区更新
+│   ├── components/           # Starlight 与实验室界面
 │   ├── assets/               # 图片资源
 │   ├── content.config.ts     # 内容集合定义
 │   └── content/docs/         # 所有文档页面（.md / .mdx）
 │       ├── index.mdx         # splash 首页
 │       ├── getting-started/  # 快速开始
 │       ├── primitives/       # 核心原子机制
-│       └── ecosystem/        # 生态与案例
+│       ├── labs/             # 开放实验
+│       ├── patterns/         # 设计模式与验证状态
+│       └── ecosystem/        # 全球生态与案例
+├── worker/                   # Cloudflare Worker API
 └── public/                   # 静态资源（favicon 等）
 ```
 
 侧边栏在 `astro.config.mjs` 的 `sidebar` 字段中维护；`src/content/docs/` 下的每个 `.md` / `.mdx` 文件按路径自动成为一个路由。
+
+## 社区 × 开放实验室
+
+Playground 用来观察 `State → Choice / Noul / Score → Typed Decision + Probability`；Labs 用来探索这些原语进入完整软件后的行为。Labs 的类型化元数据位于 `src/data/labs.mjs`，Patterns 位于 `src/data/patterns.mjs`，关联由 Registry 推导。状态包括原型、实验中和已验证；未经验证的结论保持假设，不将示意分布标成实时调用。
+
+新增 Lab：在 Registry 增加元数据（假设、设置、数据、结果、失败、延迟、成本、局限和结论），创建内容页并链接现有实验或源码。新增 Pattern：增加原语、验证状态、适用边界与相关 Lab ID，再创建内容页。没有实际内容的分类不建空页面。
+
+原有 `/getting-started/`、`/primitives/`、`/lab/`、`/ecosystem/` 和 `/playground/` 路径继续保留；`/learn/*` 与 `/labs/chinese-routing` 提供兼容入口。
 
 ## 内容勘误
 

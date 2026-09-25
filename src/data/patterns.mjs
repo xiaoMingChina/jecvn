@@ -1,0 +1,14 @@
+/** @typedef {'choice'|'noul'|'score'|'hybrid'} Primitive */
+/** @typedef {'hypothesis'|'experimental'|'validated'} PatternStatus */
+/** @typedef {{id:string,slug:string,title:string,summary:string,primitive:Primitive,status:PatternStatus,problem:string,architecture:string,whenToUse:string,whenNotToUse:string,relatedLabs:string[]}} PatternMeta */
+/** @type {PatternMeta[]} */
+export const patterns = [
+ {id:'router',slug:'router',title:'Router · 意图分流',summary:'从有限意图中选择后续处理流程。',primitive:'choice',status:'experimental',problem:'输入语言多样，后续动作却是有限且明确的。',architecture:'State → Choice → 置信度门槛 → 对应流程；低置信或高风险输入交给人工。',whenToUse:'路由候选可枚举，错误路由有兜底，且能通过数据持续评估。',whenNotToUse:'候选边界模糊、动作不可逆，或规则已经足够可靠简单。',relatedLabs:['chinese-routing']},
+ {id:'guard',slug:'guard',title:'Guard · 风险门控',summary:'先判断是否满足继续执行的条件。',primitive:'noul',status:'hypothesis',problem:'执行前需要一个明确的继续 / 暂停判断。',architecture:'State → Noul → 风险阈值 → 继续、拒绝或人工复核。',whenToUse:'判断目标清晰，且系统为拒绝或不确定保留安全出口。',whenNotToUse:'把概率当成安全证明，或没有独立的授权与验证机制。',relatedLabs:[]},
+ {id:'scorer',slug:'scorer',title:'Scorer · 有序等级评估',summary:'用可解释的有序标准评估状态。',primitive:'score',status:'hypothesis',problem:'需要按同一组等级描述比较案例。',architecture:'State → Score rubric → 概率分布 / 加权分数 → 后续策略。',whenToUse:'等级具有稳定顺序、标准可审阅，并可用标注样例检查偏差。',whenNotToUse:'分数被当作客观测量，或任务实际需要开放式解释。',relatedLabs:['interactive-fiction']},
+ {id:'judge',slug:'judge',title:'Judge · 结果核验',summary:'判断结果是否满足显式条件或证据要求。',primitive:'noul',status:'hypothesis',problem:'生成或检索之后，需要决定结果是否足够支撑下一步。',architecture:'候选结果 + 证据 → Noul → 接受、重试或人工复核。',whenToUse:'核验条件可描述，且拒绝路径成本可控。',whenNotToUse:'把模型自我判断当作独立事实核验，或缺少可用证据。',relatedLabs:[]},
+ {id:'fast-loop',slug:'fast-loop',title:'Fast Loop · 高频小决策',summary:'将一次短决策嵌入由程序掌控的实时循环。',primitive:'choice',status:'hypothesis',problem:'软件循环中有大量小动作，响应时间本身会影响结果。',architecture:'Engine → State snapshot → Choice → typed action → Engine；超时有明确动作策略。',whenToUse:'动作集有限、每次决策上下文精简，且能观察延迟与超时。',whenNotToUse:'时限严于端到端延迟，或动作需要长链规划与持续生成。',relatedLabs:['tetris']},
+ {id:'npc-decision',slug:'npc-decision',title:'NPC Decision · 角色状态决策',summary:'让角色决策影响预写故事，而不是生成整段剧情。',primitive:'hybrid',status:'experimental',problem:'互动角色需要回应玩家，同时维持世界状态与剧情边界。',architecture:'Story state → Choice / Score → deterministic story engine → authored response。',whenToUse:'角色动作与分支可枚举，剧情文本由确定性引擎控制。',whenNotToUse:'将概率分类误认为角色理解，或需要即兴长篇生成。',relatedLabs:['interactive-fiction']},
+ {id:'state-to-decision',slug:'state-to-decision',title:'State → Decision · 状态到动作',summary:'把可观察状态映射到类型受限的下一步决策。',primitive:'hybrid',status:'hypothesis',problem:'软件有结构化状态，需要挑选一个合法动作。',architecture:'State snapshot → typed question → validate action → deterministic executor。',whenToUse:'状态字段和合法动作清晰，执行器会独立校验动作。',whenNotToUse:'模型输出可直接越过校验修改外部状态。',relatedLabs:['tetris','interactive-fiction']},
+];
+export const patternStatusLabel={hypothesis:'待验证假设',experimental:'实验中',validated:'已验证'};
